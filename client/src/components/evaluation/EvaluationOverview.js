@@ -53,9 +53,7 @@ class EvaluationOverview extends PureComponent {
     return (
      
       <div>
-{console.log(evaluations
-          .filter(evaluation => evaluation.studentNo === student.id)
-          .map(evaluation =>evaluation.color))}
+{console.log(student)}
         {
         evaluations.length > 0 &&
         <div>

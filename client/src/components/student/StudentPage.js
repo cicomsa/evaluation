@@ -74,7 +74,13 @@ class StudentPage extends PureComponent {
             <div className={classes.root}> 
        
              <GridList cellHeight={280} className={classes.gridList}>
-                { students.map(student => (
+             {console.log( students.filter(student => student.batchNo === batch.id)
+                
+             )}
+
+                { students
+                .filter(student =>student.batchNo === batch.id)
+                .map(student => (
                 <GridListTile key={student.id}>
                     <Link to={`/students/${student.id}`}><img src={require(`./images-landscape/${student.photo}`)} alt="student" width='500'/></Link>
                     <GridListTileBar

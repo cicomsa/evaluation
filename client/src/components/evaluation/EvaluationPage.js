@@ -11,7 +11,7 @@ import Button from 'material-ui/Button'
 import {Link} from 'react-router-dom'
 import {addEvaluation, getEvaluations} from '../../actions/evaluations'
 import {deleteEvaluation ,fetchEvaluation} from '../../actions/evaluation'
-import EvaluationOverview from './EvaluationOverview';
+import DeleteIcon from '@material-ui/icons/Delete'
 
 class EvaluationPage extends PureComponent {
 
@@ -44,6 +44,25 @@ class EvaluationPage extends PureComponent {
     )
 
     if (!student) return null
+
+    const colorArray = evaluations
+    .filter(evaluation => evaluation.studentNo === student.id)
+    .sort((a,b) => b.id-a.id)[0]
+
+  const displayEvaluation = () => {
+    if (colorArray) { 
+      return (
+        <div>
+          <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
+          <img src={require(`../evaluation/colors/${colorArray.color+'.png'}`)} 
+            alt="student" width="25"/>
+          <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
+          <li className='overviewRemark'>{evaluations.sort((a,b) => b.id-a.id)[0].remark}</li>
+        </div>
+      )
+    }
+    return <p style={{color:"red"}} >pending evaluation...</p>   
+  }
    
     return (
      
@@ -61,7 +80,35 @@ class EvaluationPage extends PureComponent {
 
            <EvaluationForm onSubmit={this.addEvaluation} /> 
            <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
-        <EvaluationOverview/>
+        
+           <div>
+
+        {
+        evaluations.length > 0 &&
+        <div>
+          <h1>Overview</h1>
+          {displayEvaluation()}    
+          
+          <hr></hr>
+
+          <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
+          {evaluations
+          .filter(evaluation => evaluation.studentNo === student.id)
+          .map(evaluation =>  (
+            <div key={evaluation.id}>
+              <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
+              <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
+                alt="student" width="25"/>
+              <li className="remark">{evaluation.remark}</li>
+              <DeleteIcon onClick={()=> this.deleteEvaluation(evaluation.id)}/>
+              <p> -------------------- </p>
+            </div>
+            ))}  
+
+        </div>
+        }          
+      
+      </div>
         <br></br>  
       
       </div>
