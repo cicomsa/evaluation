@@ -11,7 +11,7 @@ export default function (state = [], action) {
     case UPDATE_BATCH:
      return state.map(batch => {
       if (batch.id === action.payload.id) {
-         return action.payload
+         return { ...batch, ...action.payload }
        }
        else return action.payload
          })

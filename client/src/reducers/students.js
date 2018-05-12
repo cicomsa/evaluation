@@ -11,7 +11,7 @@ export default function (state = [], action) {
     case UPDATE_STUDENT:
      return state.map(student => {
       if (student.id === action.payload.id) {
-         return action.payload
+         return { ...student, ...action.payload }
        }
        else return action.payload
          })

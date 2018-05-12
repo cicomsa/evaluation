@@ -12,10 +12,11 @@ import {Link} from 'react-router-dom'
 import DeleteIcon from '@material-ui/icons/Delete'
 // import StudentsGrid from './StudentsGrid'
 import Button from 'material-ui/Button'
-import {fetchBatch} from '../../actions/batch'
+import {fetchBatch,updateBatch} from '../../actions/batch'
 //import ClearIcon from '@material-ui/icons/Clear'
 // import PercentageBar from './PercentageBar';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
+import BatchForm from '../batch/BatchForm'
 
 const styles = theme => ({
   root: {
@@ -37,6 +38,16 @@ const styles = theme => ({
 
 class StudentPage extends PureComponent {
 
+  state = {
+    edit: false
+  }
+
+  toggleEdit = () => {
+    this.setState({
+      edit: !this.state.edit
+    })
+  }
+
   componentWillMount() {
     this.props.getStudents()
     this.props.fetchBatch(this.props.match.params.id)
@@ -51,12 +62,16 @@ class StudentPage extends PureComponent {
     this.props.deleteStudent(studentId)
   }
 
+  updateBatch = (batch) => {
+    this.props.updateBatch(this.props.match.params.id, batch)
+    this.toggleEdit()
+  }
+
   render() {
 
     const { students, authenticated, classes, batch } = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
-
     )
     
     if (!batch) return null
@@ -64,8 +79,23 @@ class StudentPage extends PureComponent {
     return (
       <div>
 
+
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
-       
+        { this.state.edit &&
+          <BatchForm initialValues={batch} onSubmit={this.updateBatch.bind(this)} />
+        }
+        { !this.state.edit &&
+        <div>
+          <p> Number: {batch.batchNumber}</p>
+          <p> Start Date: {batch.startDate}</p>
+          <p> End Date: {batch.endDate}</p>
+          <br/>
+          
+          <Button type="submit" variant="raised" className="backButton" onClick={()=>this.toggleEdit()}>Edit</Button> 
+        
+        </div>
+        }
+
         <StudentForm onSubmit={this.addStudent}/>
         <hr></hr>
         {/* <PercentageBar/> */}
@@ -113,4 +143,4 @@ const mapStateToProps = (state) => {
 }
      
 export default withStyles(styles)(connect(mapStateToProps, 
-  {getStudents, login, addStudent, deleteStudent, fetchBatch})(StudentPage))
+  {getStudents, login, addStudent, deleteStudent, fetchBatch,updateBatch})(StudentPage))
