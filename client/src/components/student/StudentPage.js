@@ -71,7 +71,7 @@ class StudentPage extends PureComponent {
 
   render() {
 
-    const { students, authenticated, classes, batch } = this.props;
+    const { students, authenticated, classes, batch, evaluations } = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
@@ -98,10 +98,12 @@ class StudentPage extends PureComponent {
         </div>
         }
 
-        <StudentForm onSubmit={this.addStudent}/>
-        <hr></hr>
-        <PercentageBar/>
-      
+          <StudentForm onSubmit={this.addStudent}/>
+          <hr></hr>
+          <PercentageBar/>
+        {console.log(evaluations
+            .filter(evaluation => evaluation.batchNo === batch.id)
+            .map(evaluation => evaluation.color))}
           <br></br> 
           <div className={classes.root}> 
       
@@ -116,9 +118,12 @@ class StudentPage extends PureComponent {
                   <Link to={`/students/${student.id}`}><img src={require(`./images-landscape/${student.photo}`)} alt="student" width='500'/></Link>
                   <GridListTileBar
                   title={student.fullName}
-                    subtitle= {students.evaluation? students.evaluation.map(evaluation => 
-                    <img key={evaluation.id} src={require(`../evaluation/colors/${(evaluation.color)? evaluation.color+'.png': "blue.png"}`)} 
-                    alt="student" width="25"/>):''}
+                  subtitle= {this.props.evaluations? 
+                      this.props.evaluations
+                      .filter(evaluation => evaluation.studentNo === student.id)
+                      .map(evaluation => 
+                        <img key={evaluation.id} src={require(`../evaluation/colors/${(evaluation.color)? evaluation.color+'.png': "blue.png"}`)} 
+                        alt="student" width="25"/>):''}
 
                   actionIcon={
                     <IconButton className={classes.button}  aria-label="Delete">
