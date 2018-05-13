@@ -17,6 +17,7 @@ import {fetchBatch,updateBatch} from '../../actions/batch'
 import PercentageBar from './PercentageBar';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
 import BatchForm from '../batch/BatchForm'
+import {getEvaluations} from '../../actions/evaluations'
 
 const styles = theme => ({
   root: {
@@ -51,6 +52,7 @@ class StudentPage extends PureComponent {
   componentWillMount() {
     this.props.getStudents()
     this.props.fetchBatch(this.props.match.params.id)
+    this.props.getEvaluations()
     }
 
   addStudent = (student) => {
@@ -100,36 +102,36 @@ class StudentPage extends PureComponent {
         <hr></hr>
         <PercentageBar/>
       
-            <br></br> 
-            <div className={classes.root}> 
-       
-             <GridList cellHeight={280} className={classes.gridList}>
-                
-             )}
+          <br></br> 
+          <div className={classes.root}> 
+      
+            <GridList cellHeight={280} className={classes.gridList}>
+              
+            )}
 
-                { students
-                .filter(student =>student.batchNo === batch.id)
-                .map(student => (
-                <GridListTile key={student.id}>
-                    <Link to={`/students/${student.id}`}><img src={require(`./images-landscape/${student.photo}`)} alt="student" width='500'/></Link>
-                    <GridListTileBar
-                    title={student.fullName}
-                      subtitle= {students.evaluation? students.evaluation.map(evaluation => 
-                      <img key={evaluation.id} src={require(`../evaluation/colors/${(evaluation.color)? evaluation.color+'.png': "blue.png"}`)} 
-                      alt="student" width="25"/>):''}
+              { students
+              .filter(student =>student.batchNo === batch.id)
+              .map(student => (
+              <GridListTile key={student.id}>
+                  <Link to={`/students/${student.id}`}><img src={require(`./images-landscape/${student.photo}`)} alt="student" width='500'/></Link>
+                  <GridListTileBar
+                  title={student.fullName}
+                    subtitle= {students.evaluation? students.evaluation.map(evaluation => 
+                    <img key={evaluation.id} src={require(`../evaluation/colors/${(evaluation.color)? evaluation.color+'.png': "blue.png"}`)} 
+                    alt="student" width="25"/>):''}
 
-                    actionIcon={
-                      <IconButton className={classes.button}  aria-label="Delete">
-                        <DeleteIcon style={{color: 'white'}} onClick={()=> this.deleteStudent(student.id)}/>
-                      </IconButton>                 
-                    }
-                    />
+                  actionIcon={
+                    <IconButton className={classes.button}  aria-label="Delete">
+                      <DeleteIcon style={{color: 'white'}} onClick={()=> this.deleteStudent(student.id)}/>
+                    </IconButton>                 
+                  }
+                  />
                 </GridListTile>
                 ))}
             </GridList>   
         </div>
       </div>
-      )
+    )
   }
 }
 
@@ -137,9 +139,10 @@ const mapStateToProps = (state) => {
   return {
     students: state.students,
     batch: state.batch,
-    authenticated: state.currentUser !== null,  
+    authenticated: state.currentUser !== null, 
+    evaluations: state.evaluations 
   }
 }
      
 export default withStyles(styles)(connect(mapStateToProps, 
-  {getStudents, login, addStudent, deleteStudent, fetchBatch,updateBatch})(StudentPage))
+  {getStudents, login, addStudent, deleteStudent, fetchBatch,updateBatch, getEvaluations})(StudentPage))

@@ -10,7 +10,8 @@ const styles = theme => ({
       marginRight: theme.spacing.unit,
       width: 250,
     }
-  })
+})
+
 class StudentForm extends PureComponent {
 
 	state = {}

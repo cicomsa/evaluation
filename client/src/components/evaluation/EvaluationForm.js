@@ -2,14 +2,9 @@ import React, {PureComponent} from 'react'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import {withStyles} from 'material-ui/styles'
-import {Link} from 'react-router-dom'
-import {fetchStudent} from '../../actions/student'
-import {connect} from 'react-redux'
 import {InputLabel} from 'material-ui/Input';
 import {FormControl} from 'material-ui/Form';
 import Select from 'material-ui/Select';
-import {fetchEvaluation} from '../../actions/evaluation'
-import {getEvaluations} from '../../actions/evaluations'
 
 const styles = theme => ({
   root: {
@@ -54,18 +49,10 @@ class EvaluationForm extends PureComponent {
         })
     } 
 
-    componentWillMount () {
-        // this.props.fetchEvaluation(this.props.evaluations
-        //     .filter(evaluation => evaluation.studentNo === this.props.student.id)
-        //     .sort((a,b) => b.id-a.id)[0].id)
-        //this.props.getEvaluations()
-    }
-
 	render() {
 
-        const {classes, student} = this.props
-        if (!student) return null
-       // if (!evaluation) return null
+        const {classes} = this.props
+    
         
 		return (   
                
@@ -122,17 +109,8 @@ class EvaluationForm extends PureComponent {
                 
                 <div>
                 
-               <Button className="save" 
-            variant="raised" 
-            type="submit" 
-            
-        > Save </Button>
-         
-
-                    {/* {<Link to={`/students/${Number(student.id)+1}`}>
-                        <Button variant="raised" type="submit" onClick={()=>this.handleSubmit}>
-                            Next
-                        </Button></Link>} */}
+                    <Button className="save" variant="raised" type="submit">Save</Button>
+ 
                 </div>
 			</form>
             
@@ -140,12 +118,4 @@ class EvaluationForm extends PureComponent {
 	}
 }
 
-const mapStateToProps = (state) => {
-    return {
-        student: state.student,
-        evaluation:state.evaluation,
-        evaluations:state.evaluations          
-    }
-}
-
-export default withStyles(styles)(connect(mapStateToProps,{fetchStudent, fetchEvaluation, getEvaluations})(EvaluationForm))
+export default withStyles(styles)(EvaluationForm)

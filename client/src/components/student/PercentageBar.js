@@ -5,7 +5,6 @@ import Typography from 'material-ui/Typography';
 import {connect} from 'react-redux'
 import {fetchBatch} from '../../actions/batch'
 import {getEvaluations} from '../../actions/evaluations'
-// import AskAQuestion from './AskAQuestion';
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
 import {fetchStudent} from '../../actions/student'
@@ -26,10 +25,7 @@ class PercentageBar extends PureComponent {
     componentWillMount() {
       if (this.props.batch === null) this.props.fetchBatch(this.props.match.params.id)
       this.props.getStudents()
-      this.props.getEvaluations()
-      
-     
-  
+      this.props.getEvaluations()   
     }
  
   render() {
@@ -49,10 +45,6 @@ class PercentageBar extends PureComponent {
       }
     })
     
-        
-      
-    
-
     const allYellow = []
     evaluations
     .filter(evaluation => evaluation.batchNo === batch.id)
@@ -75,73 +67,58 @@ class PercentageBar extends PureComponent {
       }
     })
     
-    
     const sumColors = allRed.length + allGreen.length + allYellow.length
 
     const redPercentage = ((allRed.length / sumColors) * 100)
     const yellowPercentage = ((allYellow.length / sumColors) * 100)
     const greenPercentage = ((allGreen.length / sumColors) * 100)
 
-    //evaluations
+    const studentsColors = evaluations
+      .filter(evaluation => evaluation.batchNo === batch.id)
+      .map(evaluation => evaluation.color)
 
-    
+    let studentsObject = {}
+    students
+      .filter(students => students.batchNo === batch.id)
+        .map(student => student.fullName)
+        .forEach((key, i) => studentsObject[key] = studentsColors[i]);
 
-            const studentsColors = evaluations
-              .filter(evaluation => evaluation.batchNo === batch.id)
-              .map(evaluation => evaluation.color)
+    //returns the names associated to the colors
+    const askColor = (color) => {
+      let studentName =[]
+      let trashUndefined = []
+        for (const key in studentsObject) {
+          if (studentsObject.hasOwnProperty(key)) {
+            
+          if (studentsObject[key] === undefined) {
+              trashUndefined.push('')           
+          } else if (studentsObject[key].includes(color)) {
+            studentName.push(key)
+          }
+        }
+      }
+        
+        return studentName    
+    }
 
-            let studentsObject = {}
-            students
-              .filter(students => students.batchNo === batch.id)
-                .map(student => student.fullName)
-                .forEach((key, i) => studentsObject[key] = studentsColors[i]);
+    //returns a random color back
+    const pickColor = () => {
+      let random = Math.floor((Math.random() * 100));
+      if (random <= 19) return 'green'                  
+      if (random <= (28+19)) return 'yellow'
+      if (random <= (28+19+53)) return 'red'   
+    }
 
-            const askColor = (color) => {
-                let studentName =[]
-                let trashUndefined = []
-                    for (const key in studentsObject) {
-                        if (studentsObject.hasOwnProperty(key)) {
-                         
-                        if (studentsObject[key] === undefined) {
-                            trashUndefined.push('')           
-                        } else if (studentsObject[key].includes(color)) {
-                          studentName.push(key)
-                        }
-                    }
-                }
-                
-                return studentName    
-            }
-
-            const randomStudent = () => {
-                let random = Math.floor((Math.random() * 100));
-                if (random < redPercentage) {    
-                    return askColor('red', randomColor())[Math.floor((Math.random() * askColor('red').length))]
-                } else if (random < (redPercentage + yellowPercentage)) {
-                    return askColor('yellow', randomColor())[Math.floor((Math.random() * askColor('yellow').length))]
-                } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
-                    return askColor('green', randomColor())[Math.floor((Math.random() * askColor('green').length))]
-                }
-            } 
-
-            const randomColor = () => {
-              let random = Math.floor((Math.random() * 100));
-              if (random <= 19) return 'green'                  
-              if (random <= (28+19)) return 'yellow'
-              if (random <= (28+19+53)) return 'red'   
-            }
-  
- 
+    const randomStudent = () => {
+      let color = []
+      color.push(pickColor())
+      console.log(color)
+      return askColor(color)[Math.floor((Math.random() * askColor(color).length))]            
+    }
+           
     return ( 
       <div>
-       {/* {console.log('askYellow', askColor('yellow'))}
-       {console.log('random yellow', randomStudent('yellow'))}
-       {console.log('askGreen',askColor('green'))}
-       {console.log('random green', randomStudent('green'))}
-       {console.log('askRed', askColor('red'))}
-       {console.log('random red', randomStudent('red'))} */}
-                  
-        {console.log(randomColor(),'randomColor')}
+      
         <Paper className={classes.root} elevation={4}>
         
           <Typography variant="headline" component="h3" style={{color:"green"}} >
@@ -155,36 +132,34 @@ class PercentageBar extends PureComponent {
           <Typography variant="headline" component="h3" style={{color:"red"}}>
           Red: {redPercentage? redPercentage.toFixed(2) : 0.00.toFixed(2)}%
           </Typography>
-
-
-            
+        
         </Paper> 
-       
-        { (randomStudent() !== undefined && randomStudent() !== '') &&
-          <Paper className={classes.root} elevation={4}>
-
-            
-             <Typography variant="headline" component="h3" style={{color:"purple"}}>
-               Hello  {randomStudent()} 
-            </Typography> 
            
-               <div>
-                
-                 <TextField
-                 id="question"
+        <Paper className={classes.root} elevation={4}>
+
+          
+          <Typography variant="headline" component="h3" style={{color:"purple"}}>
+              Hello  {randomStudent()} 
+          </Typography> 
+          
+            <div>
+              
+              <TextField
+                id="question"
                 label="Question for you :)"
-                 type="text"
+                type="text"
                 name="question"
                 margin="normal"
                 className={classes.textField}
-                 onChange={this.handleChange}                   
-                 />
-                </div>
+                onChange={this.handleChange}                   
+              />
 
-                <Button type="submit" variant="raised">Send</Button>
-               
+              </div>
+
+            <Button type="submit" variant="raised">Send</Button>
+              
           </Paper>
-          }
+        }
 
       </div>  
     )

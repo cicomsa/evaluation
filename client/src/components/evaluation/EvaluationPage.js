@@ -86,6 +86,7 @@ class EvaluationPage extends PureComponent {
               alt="student" width="25"/>
             <p style={{textDecoration:"underline"}}>Remark: </p>  
             <li className='overviewRemark'>{evaluationArray[0].remark}</li>
+            {console.log(evaluationArray[0])} 
           </div>
         )
       }
@@ -93,7 +94,7 @@ class EvaluationPage extends PureComponent {
     }
 
     return ( 
-           
+          
       <div>
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button>
   
@@ -104,10 +105,6 @@ class EvaluationPage extends PureComponent {
            <ClearIcon onClick = {() => this.toggleEditStudent()}/>
          </div>
         }
- 
-
-
-
 
         {
          !this.state.editStudent &&
@@ -147,7 +144,7 @@ class EvaluationPage extends PureComponent {
 
            </div>
         }
-          <hr></hr>                                         
+                                                  
       </div>     
       )
   }

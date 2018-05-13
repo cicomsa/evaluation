@@ -1,12 +1,9 @@
 import React, {PureComponent} from 'react';
 import {withStyles} from 'material-ui/styles';
-
 import {connect} from 'react-redux'
 import {getStudents} from '../../actions/students'
-
 import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-// import StudentsGrid from './StudentsGrid'
 import Button from 'material-ui/Button'
 import {fetchEvaluation,updateEvaluation} from '../../actions/evaluation'
 import ClearIcon from '@material-ui/icons/Clear'
@@ -44,8 +41,6 @@ class EditEvaluation extends PureComponent {
   }
 
   componentWillMount() {
-  
-    // this.props.fetchStudent(this.props.evaluation.studentNo)
     this.props.fetchEvaluation(this.props.match.params.id)
     }
 
@@ -65,14 +60,8 @@ class EditEvaluation extends PureComponent {
 
     return (
       <div>
-
  
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
-        
-        {/* <h1>Student profile</h1>
-        <img src={require(`../student/images-landscape/${student.photo}`)} 
-          alt="student" width='200'/>
-        <p style={{textDecoration:"underline"}}>{student.fullName}</p>  */}
 
         {
         this.state.edit &&
@@ -84,8 +73,9 @@ class EditEvaluation extends PureComponent {
         
         { !this.state.edit &&
         <div>
-           <div>
-           <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
+          <div>
+            <h2>Evaluation</h2>
+            <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
             <p style={{textDecoration:"underline"}}>Color: </p>      
             <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
               alt="student" width="25"/>
