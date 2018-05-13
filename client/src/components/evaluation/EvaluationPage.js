@@ -120,8 +120,6 @@ class EvaluationPage extends PureComponent {
          </div>
         }
 
-        <hr></hr> 
-
         {
         !evaluationArray[0]?
          (
@@ -137,41 +135,17 @@ class EvaluationPage extends PureComponent {
             </div> 
           )          
         }   
-        {console.log(evaluations)}
-         {/* {
-        this.state.editEvaluation &&
-        <div>
-          <EvaluationForm initialValues={evaluation} onSubmit={this.updateEvaluation} />
-          <ClearIcon onClick = {() => this.toggleEditEvaluation()}/>
-        </div>
-        } */}
 
         { evaluations.filter(evaluation => evaluation.studentNo === student.id).length > 0 &&
         <div>
           <h1>Last evaluation overview</h1>
           {displayEvaluation()}
-          <Link to={`/evaluations/${student.id}`}><Button variant="raised" type="submit" 
+          <Link to={`/evaluations/student/${student.id}`}><Button variant="raised" type="submit" 
             >All evaluations</Button></Link>   
-          
 
            </div>
         }
-          <hr></hr>
-
-          {/* <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
-          {evaluations
-          .filter(evaluation => evaluation.studentNo === student.id)
-          .map(evaluation =>  (
-            <div key={evaluation.id}>
-              <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
-              {evaluation.color?<img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
-                alt="student" width="25"/>:""}
-              <li className="remark">{evaluation.remark}</li>
-            </div>
-            ))}    */}
-
-        
-                                           
+          <hr></hr>                                         
       </div>     
       )
   }

@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {fetchStudent} from '../../actions/student'
 import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-//import StudentForm from '../student/StudentForm'
+import {Link} from 'react-router-dom'
 import EvaluationForm from './EvaluationForm'
 import Button from 'material-ui/Button'
 import {addEvaluation, getEvaluations} from '../../actions/evaluations'
@@ -36,6 +36,8 @@ class EvaluationOverview extends PureComponent {
     return (
      
       <div>
+
+          <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
         
           <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
           
@@ -52,7 +54,9 @@ class EvaluationOverview extends PureComponent {
               
               {console.log(() =>this.toggleEditEvaluation())}
               <div>
-                <Button type="submit" variant="raised" className="backButton">Edit details</Button> 
+              <Link to={`/evaluations/${evaluation.id}`}>
+              <Button type="submit" variant="raised">Edit details</Button>
+              </Link> 
                 <p>-------------------</p>  
               </div>
                  

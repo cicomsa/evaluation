@@ -5,10 +5,8 @@ export default function (state = null, action) {
     case GET_EVALUATION:
       return action.payload
     case UPDATE_EVALUATION:
-      return [
-         ...state,
-         {...action.payload}
-      ]
+      return {...state,
+        ...action.payload}
 
     default:
       return state

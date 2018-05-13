@@ -8,6 +8,7 @@ import TopBar from './components/layout/TopBar'
 import StudentPage from './components/student/StudentPage';
 import EvaluationPage from './components/evaluation/EvaluationPage'
 import EvaluationOverview from './components/evaluation/EvaluationOverview'
+import EditEvaluation from './components/evaluation/EditEvaluation'
 
 class App extends Component {
   render() {
@@ -24,7 +25,8 @@ class App extends Component {
           <Route exact path="/batches" component={BatchPage} />
           <Route exact path="/batches/:id" component={StudentPage} />
           <Route exact path="/students/:id" component={EvaluationPage} />
-          <Route exact path="/evaluations/:id" component={EvaluationOverview} />
+          <Route exact path="/evaluations/student/:id" component={EvaluationOverview} />
+          <Route exact path="/evaluations/:id" component={EditEvaluation} />
           <Route exact path="/" render={ () => <Redirect to="/batches" /> } />
           </main>
         </div>

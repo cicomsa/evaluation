@@ -35,6 +35,11 @@ const TopBar = (props) => {
           location.pathname.indexOf('students/') > 0 &&
           <Button color="inherit" onClick={() => history.push('/logout')}>Log out</Button>
         }
+
+        {
+          location.pathname.indexOf('evaluations/') > 0 &&
+          <Button color="inherit" onClick={() => history.push('/logout')}>Log out</Button>
+        }
       </Toolbar>
     </AppBar>
   )

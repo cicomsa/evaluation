@@ -59,7 +59,7 @@ class EvaluationForm extends PureComponent {
         // this.props.fetchEvaluation(this.props.evaluations
         //     .filter(evaluation => evaluation.studentNo === this.props.student.id)
         //     .sort((a,b) => b.id-a.id)[0].id)
-        this.props.getEvaluations()
+        //this.props.getEvaluations()
     }
 
 	render() {

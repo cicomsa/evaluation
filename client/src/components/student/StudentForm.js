@@ -42,7 +42,7 @@ class StudentForm extends PureComponent {
 		return (         
 			<form onSubmit={this.handleSubmit}>
             
-                <h1>Add Student</h1>
+                <h1>Student</h1>
                 <div>
                     
                     <TextField
