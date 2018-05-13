@@ -25,7 +25,7 @@ class PercentageBar extends PureComponent {
 
     componentWillMount() {
       this.props.getEvaluations()
-      this.props.fetchBatch(this.props.batch.id)
+      this.props.fetchBatch(this.props.evaluations.filter(evaluation => evaluation.batchNo))
   
     }
  
@@ -33,8 +33,12 @@ class PercentageBar extends PureComponent {
 
     const { students, classes, student, evaluation, evaluations, batch, batches} = this.props;
 
+    if (!batch) return null
+
     const allRed = []
-    evaluations.map(evaluation => {
+    evaluations
+    .filter(evaluation => evaluation.batchNo === batch.id)
+    .map(evaluation => {
       if (evaluation.color.includes("red")) {
         return allRed.push("true")
       } else {
@@ -47,7 +51,9 @@ class PercentageBar extends PureComponent {
     
 
     const allYellow = []
-    evaluations.map(evaluation => {
+    evaluations
+    .filter(evaluation => evaluation.batchNo === batch.id)
+    .map(evaluation => {
       if (evaluation.color.includes("yellow")) {
         return allYellow.push("true")
       } else {
@@ -56,7 +62,9 @@ class PercentageBar extends PureComponent {
     })
 
     const allGreen = []
-    evaluations.map(evaluation => {
+    evaluations
+    .filter(evaluation => evaluation.batchNo === batch.id)
+    .map(evaluation => {
       if (evaluation.color.includes("green")) {
         return allGreen.push("true")
       } else {
@@ -123,6 +131,8 @@ class PercentageBar extends PureComponent {
           <Typography variant="headline" component="h3" style={{color:"red"}}>
           Red: {redPercentage? redPercentage.toFixed(2) : 0.00.toFixed(2)}%
           </Typography>
+                  {console.log(evaluations)}
+                  {console.log(batch)}
                   
         </Paper> 
        
