@@ -38,22 +38,23 @@ class EvaluationOverview extends PureComponent {
     if (!student) return null
    
       
-    // const displayEvaluation = () => {
-    //   if (evaluations
-    //     .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0]) { 
-    //     return (
-    //       <div>
-    //         <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
-    //         <img src={require(`../evaluation/colors/${evaluations
-    //   .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0].color+'.png'}`)} 
-    //           alt="student" width="25"/>
-    //         <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
-    //         <li className='overviewRemark'>{student.evaluations.sort((a,b) => b.id-a.id)[0].remark}</li>
-    //       </div>
-    //     )
-    //   }
-    //   return <p style={{color:"red"}} >pending evaluation...</p>   
-    // }
+    const displayEvaluation = () => {
+      if (evaluations
+        .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0]) { 
+        return (
+          <div>
+            <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
+            <img src={require(`../evaluation/colors/${evaluations
+      .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0].color+'.png'}`)} 
+              alt="student" width="25"/>
+            <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
+            <li className='overviewRemark'>{evaluations
+        .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0].remark}</li>
+          </div>
+        )
+      }
+      return <p style={{color:"red"}} >pending evaluation...</p>   
+    }
   
     return (
      
@@ -67,7 +68,7 @@ class EvaluationOverview extends PureComponent {
        
         <div>
           <h1>Overview</h1>
-          {/* {displayEvaluation()}     */}
+          {displayEvaluation()}    
           
           <hr></hr>
 
