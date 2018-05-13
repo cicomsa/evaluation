@@ -107,6 +107,10 @@ class EvaluationPage extends PureComponent {
          </div>
         }
  
+{console.log("colors", evaluations.map(evaluation => evaluation.color))} 
+
+
+
         {
          !this.state.editStudent &&
          <div>

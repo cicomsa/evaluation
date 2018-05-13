@@ -14,7 +14,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import Button from 'material-ui/Button'
 import {fetchBatch,updateBatch} from '../../actions/batch'
 //import ClearIcon from '@material-ui/icons/Clear'
-// import PercentageBar from './PercentageBar';
+import PercentageBar from './PercentageBar';
 import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
 import BatchForm from '../batch/BatchForm'
 
@@ -98,13 +98,12 @@ class StudentPage extends PureComponent {
 
         <StudentForm onSubmit={this.addStudent}/>
         <hr></hr>
-        {/* <PercentageBar/> */}
+        <PercentageBar/>
       
             <br></br> 
             <div className={classes.root}> 
        
              <GridList cellHeight={280} className={classes.gridList}>
-             {console.log( students.filter(student => student.batchNo === batch.id)
                 
              )}
 

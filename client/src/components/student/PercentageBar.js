@@ -8,6 +8,10 @@ import {getEvaluations} from '../../actions/evaluations'
 // import AskAQuestion from './AskAQuestion';
 import Button from 'material-ui/Button'
 import TextField from 'material-ui/TextField'
+import {fetchStudent} from '../../actions/student'
+import {getStudents} from '../../actions/students'
+import {getBatches} from '../../actions/batches'
+import {fetchEvaluation} from '../../actions/evaluation'
 
 const styles = theme => ({
     root: theme.mixins.gutters({
@@ -27,46 +31,38 @@ class PercentageBar extends PureComponent {
  
   render() {
 
-    const { classes, evaluations, batch } = this.props;
-    
+    const { students, classes, student, evaluation, evaluations, batch, batches} = this.props;
+
     const allRed = []
-    batch.students
-      .map(student=>student.evaluations
-        .map(evaluation=> {
-          if (evaluation.color.includes("red")) {
-            return allRed.push("true")
-          } else {
-            return ''
-          }
-        }
-      )
-    )
+    evaluations.map(evaluation => {
+      if (evaluation.color.includes("red")) {
+        return allRed.push("true")
+      } else {
+        return ''
+      }
+    })
+    
+        
+      
+    
 
     const allYellow = []
-    batch.students
-      .map(student=>student.evaluations
-        .map(evaluation=> {
-          if (evaluation.color.includes("yellow")) {
-            return allYellow.push("true")
-          } else {
-            return ''
-          }
-        }
-      )
-    )
+    evaluations.map(evaluation => {
+      if (evaluation.color.includes("yellow")) {
+        return allYellow.push("true")
+      } else {
+        return ''
+      }
+    })
 
     const allGreen = []
-    batch.students
-      .map(student=>student.evaluations
-        .map(evaluation=> {
-          if (evaluation.color.includes("green")) {
-            return allGreen.push("true")
-          } else {
-            return ''
-          }
-        }
-      )
-    )
+    evaluations.map(evaluation => {
+      if (evaluation.color.includes("green")) {
+        return allGreen.push("true")
+      } else {
+        return ''
+      }
+    })
     
     
     const sumColors = allRed.length + allGreen.length + allYellow.length
@@ -75,44 +71,44 @@ class PercentageBar extends PureComponent {
     const yellowPercentage = ((allYellow.length / sumColors) * 100)
     const greenPercentage = ((allGreen.length / sumColors) * 100)
 
-    const evaluation = batch.students.map(student=> student.evaluations)
+    // const evaluation = batch.students.map(student=> student.evaluations)
 
     
 
-            const studentsColors = evaluations.map(evaluation => evaluation.color)
+            // const studentsColors = evaluations.map(evaluation => evaluation.color)
 
-            let studentsObject = {}
-            batch.students.map(student=>student.fullName).forEach((key, i) => studentsObject[key] = studentsColors[i]);
+            // let studentsObject = {}
+            // batch.students.map(student=>student.fullName).forEach((key, i) => studentsObject[key] = studentsColors[i]);
 
-            const checkColor = (color) => {
-                let name =[]
-                    for (const key in studentsObject) {
-                        if (studentsObject.hasOwnProperty(key)) {
-                        if (studentsObject[key].includes(color)) {
-                            name.push(key)           
-                        }
-                    }
-                }
+            // const checkColor = (color) => {
+            //     let name =[]
+            //         for (const key in studentsObject) {
+            //             if (studentsObject.hasOwnProperty(key)) {
+            //             if (studentsObject[key].includes(color)) {
+            //                 name.push(key)           
+            //             }
+            //         }
+            //     }
 
-                return name    
-            }
+            //     return name    
+            // }
 
-            const randomColor = () => {
-                let random = Math.floor((Math.random() * 100));
-                if (random < redPercentage) {    
-                    return checkColor('red')
-                } else if (random < (redPercentage + yellowPercentage)) {
-                    return checkColor('yellow')
-                } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
-                    return checkColor('green')
-                }
-            } 
+            // const randomColor = () => {
+            //     let random = Math.floor((Math.random() * 100));
+            //     if (random < redPercentage) {    
+            //         return checkColor('red')
+            //     } else if (random < (redPercentage + yellowPercentage)) {
+            //         return checkColor('yellow')
+            //     } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
+            //         return checkColor('green')
+            //     }
+            // } 
   
  
     return ( 
       <div>
 
-          {console.log(randomColor('red'))}
+          {/* {console.log(randomColor('red'))} */}
          
         <Paper className={classes.root} elevation={4}>
         
@@ -130,11 +126,11 @@ class PercentageBar extends PureComponent {
                   
         </Paper> 
        
-        
+{/*         
          <Paper className={classes.root} elevation={4}>
             
             <Typography variant="headline" component="h3" style={{color:"purple"}}>
-              {/* { `Ask ${(randomColor() !== undefined || randomColor() !== '') ? randomColor(): ''} a question? `  } */}
+              { `Ask ${(randomColor() !== undefined || randomColor() !== '') ? randomColor(): ''} a question? `  }
             Hello {randomColor()}!
             </Typography>
 
@@ -152,9 +148,9 @@ class PercentageBar extends PureComponent {
                </div>
 
                <Button type="submit" variant="raised">Send</Button>
-                
-          </Paper>
-          
+               
+          </Paper> */}
+         
 
       </div>  
     )
@@ -162,10 +158,15 @@ class PercentageBar extends PureComponent {
 }
 
 const mapStateToProps = (state) => {
-  return {   
+  return {
+    students: state.students,
+    student: state.student,
     batch: state.batch,
-    evaluations: state.evaluations
+    batches: state.batches, 
+    evaluation:state.evaluation,
+    evaluations:state.evaluations
   }
 }
-
-export default withStyles(styles)(connect(mapStateToProps, {getEvaluations, fetchBatch})(PercentageBar));
+     
+export default withStyles(styles)(connect(mapStateToProps, 
+  {getStudents, getBatches, getEvaluations, fetchEvaluation, fetchStudent, fetchBatch})(PercentageBar))
