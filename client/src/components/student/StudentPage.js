@@ -63,8 +63,8 @@ class StudentPage extends PureComponent {
   }
 
   updateBatch = (batch) => {
-    this.props.updateBatch(this.props.match.params.id, batch)
     this.toggleEdit()
+    this.props.updateBatch(this.props.match.params.id, batch)   
   }
 
   render() {
@@ -82,7 +82,7 @@ class StudentPage extends PureComponent {
 
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
         { this.state.edit &&
-          <BatchForm initialValues={batch} onSubmit={this.updateBatch.bind(this)} />
+          <BatchForm initialValues={batch} onSubmit={this.updateBatch.bind(this)}/>
         }
         { !this.state.edit &&
         <div>

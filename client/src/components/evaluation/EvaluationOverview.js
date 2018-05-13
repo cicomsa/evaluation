@@ -9,30 +9,48 @@ import {Redirect} from 'react-router-dom'
 import EvaluationForm from './EvaluationForm'
 import Button from 'material-ui/Button'
  import {getEvaluations} from '../../actions/evaluations'
-import {deleteEvaluation } from '../../actions/evaluation'
+import {deleteEvaluation, fetchEvaluation } from '../../actions/evaluation'
+import ClearIcon from '@material-ui/icons/Clear'
 
 class EvaluationOverview extends PureComponent {
 
+  state = {
+    edit: false
+  }
+
+  toggleEdit = () => {
+    this.setState({
+      edit: !this.state.edit
+    })
+  }
+
   componentWillMount() {
+     this.props.fetchEvaluation(this.props.params.id)
+     this.props.fetchStudent(this.props.evaluation.studentNo)
      this.props.getEvaluations()
-     this.props.fetchStudent(this.props.student.id)
     }
 
-  deleteEvaluation = (evaluationId) => {
-    this.props.deleteEvaluation(evaluationId)
+    deleteEvaluation = (evaluationId) => {
+      this.props.deleteEvaluation(evaluationId)
+    }
+  
+  
+    updateEvaluation = (evaluation) => {
+      this.props.updateEvaluation(this.props.match.params.id, evaluation)
+      this.toggleEdit()
   }
 
   render() {
 
-    const { evaluations, authenticated, student } = this.props;
+    const { evaluation, authenticated, student, evaluations } = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
 
     if (!student) return null
 
-    const colorArray = evaluations
-      .filter(evaluation => evaluation.studentNo === student.id)
+    const colorArray = evaluation
+     
       .sort((a,b) => b.id-a.id)[0]
 
     const displayEvaluation = () => {
@@ -53,31 +71,41 @@ class EvaluationOverview extends PureComponent {
     return (
      
       <div>
-{console.log(student)}
+
         {
-        evaluations.length > 0 &&
-        <div>
-          <h1>Overview</h1>
-          {displayEvaluation()}    
-          
-          <hr></hr>
+      this.state.edit &&
+      <div>
+        <EvaluationForm initialValues={evaluation} onSubmit={this.updateEvaluation} />
+        <ClearIcon onClick = {() => this.toggleEdit()}/>
+      </div>
+      }
 
-          <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
-          {evaluations
-          .filter(evaluation => evaluation.studentNo === student.id)
-          .map(evaluation =>  (
-            <div key={evaluation.id}>
-              <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
-              <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
-                alt="student" width="25"/>
-              <li className="remark">{evaluation.remark}</li>
-              <DeleteIcon onClick={()=> this.deleteEvaluation(evaluation.id)}/>
-              <p> -------------------- </p>
-            </div>
-            ))}  
+      {
+      !this.state.edit &&
+      <div>
+        <h1>Overview</h1>
+        {displayEvaluation()}
+        <Button variant="raised" type="submit" 
+          onClick = {() => this.toggleEdit()}>Edit</Button>     
+        
+        <hr></hr>
 
-        </div>
-        }          
+        <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
+        {evaluations
+        .filter(evaluation => evaluation.studentNo === student.id)
+        .map(evaluation =>  (
+          <div key={evaluation.id}>
+            <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
+            <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
+              alt="student" width="25"/>
+            <li className="remark">{evaluation.remark}</li>
+            <DeleteIcon onClick={()=> this.deleteEvaluation(evaluation.id)}/>    
+            <p>-------------------</p>                               
+          </div>
+          ))}  
+
+      </div>
+      }  
       
       </div>
     )
@@ -88,9 +116,10 @@ const mapStateToProps = (state) => {
   return {
     student: state.student,
     authenticated: state.currentUser !== null,
-    evaluations: state.evaluations
+    evaluations: state.evaluations,
+    evaluation: state.evaluation
   }
 }
      
 export default connect(mapStateToProps, 
-  {login, deleteEvaluation, fetchStudent, getEvaluations, deleteEvaluation})(EvaluationOverview)
+  {login, deleteEvaluation, fetchStudent, fetchEvaluation, getEvaluations})(EvaluationOverview)

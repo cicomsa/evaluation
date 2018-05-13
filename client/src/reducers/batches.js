@@ -1,4 +1,4 @@
-import {GET_BATCHES, ADD_BATCH, REMOVE_BATCH, UPDATE_BATCH} from '../actions/index'
+import {GET_BATCHES, ADD_BATCH, REMOVE_BATCH} from '../actions/index'
 
 export default function (state = [], action) {
   switch (action.type) {
@@ -7,14 +7,7 @@ export default function (state = [], action) {
     case ADD_BATCH:
       return state.concat(action.payload)
     case REMOVE_BATCH:
-      return state.filter(batch => batch.id !== action.payload)
-    case UPDATE_BATCH:
-     return state.map(batch => {
-      if (batch.id === action.payload.id) {
-         return { ...batch, ...action.payload }
-       }
-       else return action.payload
-         })
+      return state.filter(batch => batch.id !== action.payload) 
     default:
       return state
   }
