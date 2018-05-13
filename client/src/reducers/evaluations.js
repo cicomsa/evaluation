@@ -9,7 +9,10 @@ export default function (state = [], action) {
     case REMOVE_EVALUATION:
       return state.filter(evaluation => evaluation.id !== action.payload)
     case UPDATE_EVALUATION:
-     return [...state,...action.payload]
+     return {
+      ...state,
+      ... action.payload
+    }
     default:
       return state
   }

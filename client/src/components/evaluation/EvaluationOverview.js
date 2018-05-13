@@ -11,6 +11,7 @@ import Button from 'material-ui/Button'
  import {getEvaluations} from '../../actions/evaluations'
 import {deleteEvaluation, fetchEvaluation } from '../../actions/evaluation'
 import ClearIcon from '@material-ui/icons/Clear'
+import {Link} from 'react-router-dom'
 
 class EvaluationOverview extends PureComponent {
 

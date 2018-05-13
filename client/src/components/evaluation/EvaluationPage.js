@@ -38,6 +38,7 @@ class EvaluationPage extends PureComponent {
 
     this.props.getEvaluations()
     this.props.fetchStudent(this.props.match.params.id)
+ 
   }
 
     updateStudent = (student) => {
@@ -73,7 +74,7 @@ class EvaluationPage extends PureComponent {
     )
 
     if (!student) return null
-    //if (!evaluation) return null
+   // if (!evaluation) return null
 
     const evaluationArray=evaluations
     .filter(evaluation => evaluation.studentNo === student.id)
@@ -82,10 +83,10 @@ class EvaluationPage extends PureComponent {
       if (evaluationArray[0]) { 
         return (
           <div>
-            <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
+            <p style={{textDecoration:"underline"}}>Color: </p>      
             <img src={require(`../evaluation/colors/${evaluationArray[0].color+'.png'}`)} 
               alt="student" width="25"/>
-            <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
+            <p style={{textDecoration:"underline"}}>Remark: </p>  
             <li className='overviewRemark'>{evaluationArray[0].remark}</li>
           </div>
         )
@@ -97,9 +98,7 @@ class EvaluationPage extends PureComponent {
            
       <div>
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button>
-     {console.log((this.props.evaluations
-      .filter(evaluation => evaluation.studentNo === this.props.student.id).length -1)
-      )}
+  
         {
          this.state.editStudent &&
          <div>
@@ -122,9 +121,7 @@ class EvaluationPage extends PureComponent {
         }
 
         <hr></hr> 
-{console.log(this.props.evaluations
-  .filter(evaluation => evaluation.studentNo === this.props.student.id)
-  .sort((a,b) => b.id-a.id)[0].id)}
+
         {
         !evaluationArray[0]?
          (
@@ -141,25 +138,27 @@ class EvaluationPage extends PureComponent {
           )          
         }   
         
-        {
+         {/* {
         this.state.editEvaluation &&
         <div>
           <EvaluationForm initialValues={evaluation} onSubmit={this.updateEvaluation} />
           <ClearIcon onClick = {() => this.toggleEditEvaluation()}/>
         </div>
-        }
+        } */}
 
-        {
-        !this.state.editEvaluation && evaluations.filter(evaluation => evaluation.studentNo === student.id).length > 0 &&
+        { evaluations.filter(evaluation => evaluation.studentNo === student.id).length > 0 &&
         <div>
-          <h1>Overview</h1>
+          <h1>Last evaluation overview</h1>
           {displayEvaluation()}
-          <Button variant="raised" type="submit" 
-            onClick = {() => this.toggleEditEvaluation()}>Edit</Button>     
+          <Link to={`/students/${student.id}/evaluations`}><Button variant="raised" type="submit" 
+            onClick = {() => this.toggleEditEvaluation()}>Edit</Button></Link>   
           
+
+           </div>
+        }
           <hr></hr>
 
-          <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
+          {/* <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
           {evaluations
           .filter(evaluation => evaluation.studentNo === student.id)
           .map(evaluation =>  (
@@ -169,10 +168,10 @@ class EvaluationPage extends PureComponent {
                 alt="student" width="25"/>:""}
               <li className="remark">{evaluation.remark}</li>
             </div>
-            ))}  
+            ))}    */}
 
-        </div>
-        }                                     
+        
+                                           
       </div>     
       )
   }

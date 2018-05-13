@@ -9,6 +9,8 @@ import {InputLabel} from 'material-ui/Input';
 import {FormControl} from 'material-ui/Form';
 import Select from 'material-ui/Select';
 import {Redirect} from 'react-router-dom'
+import {fetchEvaluation} from '../../actions/evaluation'
+import {getEvaluations} from '../../actions/evaluations'
 
 const styles = theme => ({
   root: {
@@ -53,10 +55,18 @@ class EvaluationForm extends PureComponent {
         })
     } 
 
+    componentWillMount () {
+        // this.props.fetchEvaluation(this.props.evaluations
+        //     .filter(evaluation => evaluation.studentNo === this.props.student.id)
+        //     .sort((a,b) => b.id-a.id)[0].id)
+        this.props.getEvaluations()
+    }
+
 	render() {
 
-        const {classes, student,} = this.props
+        const {classes, student,evaluation} = this.props
         if (!student) return null
+       // if (!evaluation) return null
         
 		return (   
                
@@ -113,12 +123,12 @@ class EvaluationForm extends PureComponent {
                 
                 <div>
                 
-                <Button className="save" 
+               <Button className="save" 
             variant="raised" 
             type="submit" 
             
         > Save </Button>
-            {console.log(student.id)}
+         
 
                     {/* {<Link to={`/students/${Number(student.id)+1}`}>
                         <Button variant="raised" type="submit" onClick={()=>this.handleSubmit}>
@@ -133,8 +143,10 @@ class EvaluationForm extends PureComponent {
 
 const mapStateToProps = (state) => {
     return {
-        student: state.student          
+        student: state.student,
+        evaluation:state.evaluation,
+        evaluations:state.evaluations          
     }
 }
 
-export default withStyles(styles)(connect(mapStateToProps,{fetchStudent})(EvaluationForm))
+export default withStyles(styles)(connect(mapStateToProps,{fetchStudent, fetchEvaluation, getEvaluations})(EvaluationForm))
