@@ -24,8 +24,11 @@ const styles = theme => ({
 class PercentageBar extends PureComponent {
 
     componentWillMount() {
+      if (this.props.batch === null) this.props.fetchBatch(this.props.match.params.id)
+      this.props.getStudents()
       this.props.getEvaluations()
-      this.props.fetchBatch(this.props.evaluations.filter(evaluation => evaluation.batchNo))
+      
+     
   
     }
  
@@ -79,43 +82,49 @@ class PercentageBar extends PureComponent {
     const yellowPercentage = ((allYellow.length / sumColors) * 100)
     const greenPercentage = ((allGreen.length / sumColors) * 100)
 
-    // const evaluation = batch.students.map(student=> student.evaluations)
+    //evaluations
 
     
 
-            // const studentsColors = evaluations.map(evaluation => evaluation.color)
+            const studentsColors = evaluations
+              .filter(evaluation => evaluation.batchNo === batch.id)
+              .map(evaluation => evaluation.color)
 
-            // let studentsObject = {}
-            // batch.students.map(student=>student.fullName).forEach((key, i) => studentsObject[key] = studentsColors[i]);
+            let studentsObject = {}
+            students
+              .filter(students => students.batchNo === batch.id)
+                .map(student => student.fullName)
+                .forEach((key, i) => studentsObject[key] = studentsColors[i]);
 
-            // const checkColor = (color) => {
-            //     let name =[]
-            //         for (const key in studentsObject) {
-            //             if (studentsObject.hasOwnProperty(key)) {
-            //             if (studentsObject[key].includes(color)) {
-            //                 name.push(key)           
-            //             }
-            //         }
-            //     }
+            const checkColor = (color) => {
+                let name =[]
+                    for (const key in studentsObject) {
+                        if (studentsObject.hasOwnProperty(key)) {
+                        if (studentsObject[key].includes(color)) {
+                            name.push(key)           
+                        }
+                    }
+                }
 
-            //     return name    
-            // }
+                return name    
+            }
 
-            // const randomColor = () => {
-            //     let random = Math.floor((Math.random() * 100));
-            //     if (random < redPercentage) {    
-            //         return checkColor('red')
-            //     } else if (random < (redPercentage + yellowPercentage)) {
-            //         return checkColor('yellow')
-            //     } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
-            //         return checkColor('green')
-            //     }
-            // } 
+            const randomColor = () => {
+                let random = Math.floor((Math.random() * 100));
+                if (random < redPercentage) {    
+                    return checkColor('red')
+                } else if (random < (redPercentage + yellowPercentage)) {
+                    return checkColor('yellow')
+                } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
+                    return checkColor('green')
+                }
+            } 
   
  
     return ( 
       <div>
-
+       {console.log()}
+                  
           {/* {console.log(randomColor('red'))} */}
          
         <Paper className={classes.root} elevation={4}>
@@ -131,36 +140,37 @@ class PercentageBar extends PureComponent {
           <Typography variant="headline" component="h3" style={{color:"red"}}>
           Red: {redPercentage? redPercentage.toFixed(2) : 0.00.toFixed(2)}%
           </Typography>
-                  {console.log(evaluations)}
-                  {console.log(batch)}
-                  
+                 
+             {console.log('green',randomColor('green'))} 
+             {console.log('red', randomColor('red'))} 
+             {console.log('yellow', randomColor('yellow'))}     
         </Paper> 
        
-{/*         
-         <Paper className={classes.root} elevation={4}>
-            
-            <Typography variant="headline" component="h3" style={{color:"purple"}}>
-              { `Ask ${(randomColor() !== undefined || randomColor() !== '') ? randomColor(): ''} a question? `  }
-            Hello {randomColor()}!
-            </Typography>
+        { (randomColor() !== undefined && randomColor() !== '') &&
+          <Paper className={classes.root} elevation={4}>
 
-              <div>
+            
+             <Typography variant="headline" component="h3" style={{color:"purple"}}>
+               Hello  {randomColor()} 
+            </Typography> 
+           
+               <div>
                 
-                <TextField
-                id="question"
+                 <TextField
+                 id="question"
                 label="Question for you :)"
-                type="text"
+                 type="text"
                 name="question"
                 margin="normal"
                 className={classes.textField}
-                onChange={this.handleChange}                   
-                />
-               </div>
+                 onChange={this.handleChange}                   
+                 />
+                </div>
 
-               <Button type="submit" variant="raised">Send</Button>
+                <Button type="submit" variant="raised">Send</Button>
                
-          </Paper> */}
-         
+          </Paper>
+          }
 
       </div>  
     )
