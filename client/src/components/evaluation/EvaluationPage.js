@@ -16,12 +16,21 @@ import DeleteIcon from '@material-ui/icons/Delete'
 class EvaluationPage extends PureComponent {
 
   state = {
-    edit: false
+    editStudent: false,
+    editEvaluation:false
   }
 
-  toggleEdit = () => {
+  toggleEditStudent = () => {
     this.setState({
-      edit: !this.state.edit
+      editStudent: !this.state.editStudent,
+    
+    })
+  }
+
+  toggleEditEvaluation = () => {
+    this.setState({
+     
+      editEvaluation: !this.state.editEvaluation
     })
   }
 
@@ -29,12 +38,24 @@ class EvaluationPage extends PureComponent {
 
     this.props.getEvaluations()
     this.props.fetchStudent(this.props.match.params.id)
+    this.props.fetchEvaluation(this.props.match.params.id)
   }
 
-    updateStudent = (student) => {
-      this.props.updateStudent(this.props.match.params.id, student)
-      this.toggleEdit()
-    }
+  updateStudent = (student) => {
+    this.props.updateStudent(this.props.match.params.id, student)
+    this.toggleEditStudent()
+  }
+
+  updateEvaluation = (evaluation) => {
+    this.props.updateEvaluation(this.props.evaluations
+      .filter(evaluation => evaluation.studentNo === this.props.student.id).length - 1, evaluation)
+    this.toggleEditEvaluation()
+  }
+
+  deleteEvaluation = (evaluationId) => {
+    this.props.deleteEvaluation(evaluationId)
+  }
+
 
 
   redirect = () => {
@@ -59,18 +80,18 @@ class EvaluationPage extends PureComponent {
     if (!student) return null
     //if (!evaluation) return null
 
-    const colorArray = evaluations
+    const evaluationArray = evaluations
     .filter(evaluation => evaluation.studentNo === student.id)
-    .sort((a,b) => b.id-a.id)[0]
+    .length-1
 
   const displayEvaluation = () => {
-    if (colorArray) { 
+    if (evaluationArray) { 
       return (
         <div>
-          <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
-          <img src={require(`../evaluation/colors/${colorArray.color+'.png'}`)} 
-            alt="student" width="25"/>
-          <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
+          <p style={{textDecoration:"underline"}}>Last evaluation color: </p>      
+          {evaluations.color?<img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
+              alt="student" width="25"/>:''}
+          <p style={{textDecoration:"underline"}}>Last evaluation remark: </p>  
           <li className='overviewRemark'>{evaluations.sort((a,b) => b.id-a.id)[0].remark}</li>
         </div>
       )
@@ -84,15 +105,15 @@ class EvaluationPage extends PureComponent {
       <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button>
    
       {
-       this.state.edit &&
+       this.state.editStudent &&
        <div>
          <StudentForm initialValues={student} onSubmit={this.updateStudent} />
-         <ClearIcon onClick = {() => this.toggleEdit()}/>
+         <ClearIcon onClick = {() => this.toggleEditStudent()}/>
        </div>
       }
 
       {
-       !this.state.edit &&
+       !this.state.editStudent &&
        <div>
           <h1>Student profile</h1>
           <img src={require(`../student/images-landscape/${student.photo}`)} 
@@ -100,30 +121,61 @@ class EvaluationPage extends PureComponent {
           <p style={{textDecoration:"underline"}}>{student.fullName}</p>     
            
           <Button variant="raised" type="submit" 
-            onClick = {() => this.toggleEdit()}>Edit</Button>     
+            onClick = {() => this.toggleEditStudent()}>Edit</Button>     
        </div>
       }
 
       <hr></hr> 
 
       {
-      !colorArray?
+      !evaluationArray[0]?
        (
         <div>
           <EvaluationForm onSubmit={this.addEvaluation}/> 
           <hr></hr> 
         </div> 
         ):(
-        colorArray.date !== new Date().toJSON().slice(0,10) && 
+        evaluationArray[0].date !== new Date().toJSON().slice(0,10) && 
           <div>
             <EvaluationForm onSubmit={this.addEvaluation}/> 
             <hr></hr> 
           </div> 
         )          
-      }      
-       
-    </div>  
-      )
+      }   
+      
+      {
+      this.state.editEvaluation &&
+      <div>
+        <EvaluationForm initialValues={evaluation} onSubmit={this.updateEvaluation} />
+        <ClearIcon onClick = {() => this.toggleEditEvaluation()}/>
+      </div>
+      }
+
+      {
+      !this.state.editEvaluation && evaluations.length > 0 &&
+      <div>
+        <h1>Overview</h1>
+        {displayEvaluation()}
+        <Button variant="raised" type="submit" 
+          onClick = {() => this.toggleEditEvaluation()}>Edit</Button>     
+        
+        <hr></hr>
+
+        <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
+        {evaluations.filter(evaluation => evaluation.studentNo === student.id)
+        .map(evaluation =>  (
+         <div key={evaluation.id}>
+            <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
+            <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
+              alt="student" width="25"/>
+            <li className="remark">{evaluation.remark}</li>
+          </div>
+          ))}  
+
+      </div>
+      }                                     
+    </div>    
+    )
   }
 }
 
@@ -137,4 +189,4 @@ const mapStateToProps = (state) => {
 }
      
 export default connect(mapStateToProps, 
-  {login, addEvaluation, fetchStudent,  getEvaluations, updateStudent})(EvaluationPage)
+  {login, addEvaluation, fetchStudent,  fetchEvaluation, getEvaluations, updateStudent, deleteEvaluation, updateEvaluation})(EvaluationPage)
