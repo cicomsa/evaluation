@@ -137,7 +137,7 @@ class EvaluationPage extends PureComponent {
             </div> 
           )          
         }   
-        
+        {console.log(evaluations)}
          {/* {
         this.state.editEvaluation &&
         <div>
@@ -150,8 +150,8 @@ class EvaluationPage extends PureComponent {
         <div>
           <h1>Last evaluation overview</h1>
           {displayEvaluation()}
-          <Link to={`/students/${student.id}/evaluations`}><Button variant="raised" type="submit" 
-            onClick = {() => this.toggleEditEvaluation()}>Edit</Button></Link>   
+          <Link to={`/evaluations/${student.id}`}><Button variant="raised" type="submit" 
+            >All evaluations</Button></Link>   
           
 
            </div>
