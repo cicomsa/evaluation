@@ -8,6 +8,7 @@ export const getEvaluations = () => (dispatch,getState) => {
   const jwt = state.currentUser.jwt
   request
     .get(`${baseUrl}/evaluations/`)
+    .set('Authorization', `Bearer ${jwt}`)
     .then(response => dispatch({
       type: GET_EVALUATIONS,
       payload: response.body

@@ -8,7 +8,6 @@ import {connect} from 'react-redux'
 import {InputLabel} from 'material-ui/Input';
 import {FormControl} from 'material-ui/Form';
 import Select from 'material-ui/Select';
-import {Redirect} from 'react-router-dom'
 import {fetchEvaluation} from '../../actions/evaluation'
 import {getEvaluations} from '../../actions/evaluations'
 
@@ -64,7 +63,7 @@ class EvaluationForm extends PureComponent {
 
 	render() {
 
-        const {classes, student,evaluation} = this.props
+        const {classes, student} = this.props
         if (!student) return null
        // if (!evaluation) return null
         

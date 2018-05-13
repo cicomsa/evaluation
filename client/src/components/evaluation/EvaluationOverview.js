@@ -1,17 +1,13 @@
 import React, {PureComponent} from 'react'
-import {withStyles} from 'material-ui/styles'
-//import ClearIcon from '@material-ui/icons/Clear'
 import {connect} from 'react-redux'
 import {fetchStudent} from '../../actions/student'
 import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
 import {Link} from 'react-router-dom'
-import EvaluationForm from './EvaluationForm'
 import Button from 'material-ui/Button'
-import {addEvaluation, getEvaluations} from '../../actions/evaluations'
+import {getEvaluations} from '../../actions/evaluations'
 import {deleteEvaluation,fetchEvaluation,updateEvaluation } from '../../actions/evaluation'
 import DeleteIcon from '@material-ui/icons/Delete'
-import ClearIcon from '@material-ui/icons/Clear'
 
 class EvaluationOverview extends PureComponent {
 
@@ -26,7 +22,7 @@ class EvaluationOverview extends PureComponent {
 
   render() {
 
-    const { evaluations, authenticated, student, evaluation } = this.props;
+    const { evaluations, authenticated, student} = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )

@@ -96,37 +96,52 @@ class PercentageBar extends PureComponent {
                 .map(student => student.fullName)
                 .forEach((key, i) => studentsObject[key] = studentsColors[i]);
 
-            const checkColor = (color) => {
-                let name =[]
+            const askColor = (color) => {
+                let studentName =[]
+                let trashUndefined = []
                     for (const key in studentsObject) {
                         if (studentsObject.hasOwnProperty(key)) {
-                        if (studentsObject[key].includes(color)) {
-                            name.push(key)           
+                         
+                        if (studentsObject[key] === undefined) {
+                            trashUndefined.push('')           
+                        } else if (studentsObject[key].includes(color)) {
+                          studentName.push(key)
                         }
                     }
                 }
-
-                return name    
+                
+                return studentName    
             }
 
-            const randomColor = () => {
+            const randomStudent = () => {
                 let random = Math.floor((Math.random() * 100));
                 if (random < redPercentage) {    
-                    return checkColor('red')
+                    return askColor('red', randomColor())[Math.floor((Math.random() * askColor('red').length))]
                 } else if (random < (redPercentage + yellowPercentage)) {
-                    return checkColor('yellow')
+                    return askColor('yellow', randomColor())[Math.floor((Math.random() * askColor('yellow').length))]
                 } else if (random < (yellowPercentage + redPercentage + greenPercentage)) {      
-                    return checkColor('green')
+                    return askColor('green', randomColor())[Math.floor((Math.random() * askColor('green').length))]
                 }
             } 
+
+            const randomColor = () => {
+              let random = Math.floor((Math.random() * 100));
+              if (random <= 19) return 'green'                  
+              if (random <= (28+19)) return 'yellow'
+              if (random <= (28+19+53)) return 'red'   
+            }
   
  
     return ( 
       <div>
-       {console.log()}
+       {/* {console.log('askYellow', askColor('yellow'))}
+       {console.log('random yellow', randomStudent('yellow'))}
+       {console.log('askGreen',askColor('green'))}
+       {console.log('random green', randomStudent('green'))}
+       {console.log('askRed', askColor('red'))}
+       {console.log('random red', randomStudent('red'))} */}
                   
-          {/* {console.log(randomColor('red'))} */}
-         
+        {console.log(randomColor(),'randomColor')}
         <Paper className={classes.root} elevation={4}>
         
           <Typography variant="headline" component="h3" style={{color:"green"}} >
@@ -140,18 +155,17 @@ class PercentageBar extends PureComponent {
           <Typography variant="headline" component="h3" style={{color:"red"}}>
           Red: {redPercentage? redPercentage.toFixed(2) : 0.00.toFixed(2)}%
           </Typography>
-                 
-             {console.log('green',randomColor('green'))} 
-             {console.log('red', randomColor('red'))} 
-             {console.log('yellow', randomColor('yellow'))}     
+
+
+            
         </Paper> 
        
-        { (randomColor() !== undefined && randomColor() !== '') &&
+        { (randomStudent() !== undefined && randomStudent() !== '') &&
           <Paper className={classes.root} elevation={4}>
 
             
              <Typography variant="headline" component="h3" style={{color:"purple"}}>
-               Hello  {randomColor()} 
+               Hello  {randomStudent()} 
             </Typography> 
            
                <div>

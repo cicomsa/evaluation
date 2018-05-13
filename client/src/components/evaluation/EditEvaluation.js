@@ -1,22 +1,17 @@
 import React, {PureComponent} from 'react';
 import {withStyles} from 'material-ui/styles';
-import IconButton from 'material-ui/IconButton'
+
 import {connect} from 'react-redux'
 import {getStudents} from '../../actions/students'
 
 import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-import {Link} from 'react-router-dom'
-import DeleteIcon from '@material-ui/icons/Delete'
 // import StudentsGrid from './StudentsGrid'
 import Button from 'material-ui/Button'
 import {fetchEvaluation,updateEvaluation} from '../../actions/evaluation'
 import ClearIcon from '@material-ui/icons/Clear'
-// import PercentageBar from './PercentageBar';
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
 import EvaluationForm from './EvaluationForm'
 import {fetchStudent} from '../../actions/student'
-import {fetchBatch} from '../../actions/batch'
 
 const styles = theme => ({
   root: {
@@ -61,7 +56,7 @@ class EditEvaluation extends PureComponent {
 
   render() {
 
-    const { students, authenticated, classes, student, evaluation } = this.props;
+    const { authenticated, evaluation } = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
