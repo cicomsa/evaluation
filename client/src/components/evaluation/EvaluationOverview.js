@@ -9,8 +9,9 @@ import {Redirect} from 'react-router-dom'
 import EvaluationForm from './EvaluationForm'
 import Button from 'material-ui/Button'
 import {addEvaluation, getEvaluations} from '../../actions/evaluations'
-import {deleteEvaluation } from '../../actions/evaluation'
+import {deleteEvaluation,fetchEvaluation,updateEvaluation } from '../../actions/evaluation'
 import DeleteIcon from '@material-ui/icons/Delete'
+import ClearIcon from '@material-ui/icons/Clear'
 
 class EvaluationOverview extends PureComponent {
 
@@ -19,60 +20,27 @@ class EvaluationOverview extends PureComponent {
     if (this.props.student === null) this.props.fetchStudent(this.props.match.params.id)
     }
 
-  // addEvaluation = (evaluation) => {
-  //   evaluation.student = this.props.student.id
-  //   this.props.addEvaluation(evaluation)
-  // }
-
   deleteEvaluation = (evaluationId) => {
     this.props.deleteEvaluation(evaluationId)
   }
 
   render() {
 
-    const { evaluations, authenticated, student } = this.props;
+    const { evaluations, authenticated, student, evaluation } = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
 
     if (!student) return null
-   
-      
-    const displayEvaluation = () => {
-      if (evaluations
-        .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0]) { 
-        return (
-          <div>
-            <p style={{textDecoration:"underline"}}>Yesterday's color: </p>      
-            <img src={require(`../evaluation/colors/${evaluations
-      .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0].color+'.png'}`)} 
-              alt="student" width="25"/>
-            <p style={{textDecoration:"underline"}}>Yesterday's remark: </p>  
-            <li className='overviewRemark'>{evaluations
-        .filter(evaluation => evaluation.studentNo === this.props.student.id).sort((a,b) => b.id-a.id)[0].remark}</li>
-          </div>
-        )
-      }
-      return <p style={{color:"red"}} >pending evaluation...</p>   
-    }
-  
+           
     return (
      
       <div>
-{console.log(evaluations
-    .filter(evaluation => evaluation.studentNo === this.props.student.id)
-    .map(evaluation => evaluation.color)
-    )}
-    
-        {
-       
-        <div>
-          <h1>Overview</h1>
-          {displayEvaluation()}    
-          
-          <hr></hr>
-
+        
           <h2 style={{fontWeight:"bold"}}> All evaluations: </h2> 
+          
+          <p>-------------------</p>  
+          <div>
           {evaluations
       .filter(evaluation => evaluation.studentNo === this.props.student.id).map(evaluation =>  (
             <div key={evaluation.id}>
@@ -80,14 +48,19 @@ class EvaluationOverview extends PureComponent {
               <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
                 alt="student" width="25"/>
               <li className="remark">{evaluation.remark}</li>
-              <DeleteIcon onClick={()=> this.deleteEvaluation(evaluation.id)}/>    
-              <p>-------------------</p>  
+              <DeleteIcon onClick={()=> this.deleteEvaluation(evaluation.id)}/> 
+              
+              {console.log(() =>this.toggleEditEvaluation())}
+              <div>
+                <Button type="submit" variant="raised" className="backButton">Edit details</Button> 
+                <p>-------------------</p>  
+              </div>
+                 
+              
             </div>
-            ))}  
+            ))}
+            </div>
 
-        </div>
-        }          
-      
       </div>
       )
   }
@@ -95,6 +68,7 @@ class EvaluationOverview extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
+    evaluation: state.evaluation,
     evaluations: state.evaluations,
     authenticated: state.currentUser !== null,
     student: state.student
@@ -102,4 +76,4 @@ const mapStateToProps = (state) => {
 }
      
 export default connect(mapStateToProps, 
-  {login, deleteEvaluation, getEvaluations, fetchStudent})(EvaluationOverview)
+  {login, deleteEvaluation, getEvaluations, fetchEvaluation, updateEvaluation, fetchStudent})(EvaluationOverview)
