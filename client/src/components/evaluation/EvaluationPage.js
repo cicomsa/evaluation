@@ -42,7 +42,7 @@ class EvaluationPage extends PureComponent {
 
     updateStudent = (student) => {
       this.props.updateStudent(this.props.match.params.id, student)
-      this.toggleEdit()
+      this.toggleEditStudent()
     }
 
 
@@ -58,7 +58,9 @@ class EvaluationPage extends PureComponent {
   }
 
   updateEvaluation = (evaluation) => {
-    this.props.updateEvaluation((this.props.evaluations.filter(evaluation => evaluation.studentNo === this.props.student.id).length -1).id, evaluation)
+    this.props.updateEvaluation(this.props.evaluations
+      .filter(evaluation => evaluation.studentNo === this.props.student.id)
+      .sort((a,b) => b.id-a.id)[0].id, evaluation)
     this.toggleEditEvaluation()
 }
 
@@ -73,7 +75,9 @@ class EvaluationPage extends PureComponent {
     if (!student) return null
     //if (!evaluation) return null
 
-    const evaluationArray=evaluations.filter(evaluation => evaluation.studentNo === student.id).sort((a,b) => b.id-a.id)
+    const evaluationArray=evaluations
+    .filter(evaluation => evaluation.studentNo === student.id)
+    .sort((a,b) => b.id-a.id)
     const displayEvaluation = () => {
       if (evaluationArray[0]) { 
         return (
@@ -93,7 +97,9 @@ class EvaluationPage extends PureComponent {
            
       <div>
         <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button>
-     
+     {console.log((this.props.evaluations
+      .filter(evaluation => evaluation.studentNo === this.props.student.id).length -1)
+      )}
         {
          this.state.editStudent &&
          <div>
@@ -116,7 +122,9 @@ class EvaluationPage extends PureComponent {
         }
 
         <hr></hr> 
-
+{console.log(this.props.evaluations
+  .filter(evaluation => evaluation.studentNo === this.props.student.id)
+  .sort((a,b) => b.id-a.id)[0].id)}
         {
         !evaluationArray[0]?
          (
