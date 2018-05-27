@@ -4,7 +4,7 @@
 
 This project was made as a final individual assignment, through which to showcase my knowledge and understanding in React and Redux, and in the front-end connection to the back-end.
 
-**The goal of the app is**
+**The goal of the app is:**
 
 * To have built a platform for teachers where they can add, edit and delete batches, students and/or evaluations.
 
