@@ -1,4 +1,4 @@
-# ClassEvaluations
+# Class Evaluations
 
 ## Project description
 
