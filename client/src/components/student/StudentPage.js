@@ -24,8 +24,10 @@ class EvaluationPage extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.getStudentEvaluations(this.props.match.params.id)
-    this.props.fetchStudent(this.props.match.params.id)
+    if (this.props.authenticated) {
+      this.props.getStudentEvaluations(this.props.match.params.id)
+      this.props.fetchStudent(this.props.match.params.id)
+    }
  
   }
 

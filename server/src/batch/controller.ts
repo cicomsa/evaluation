@@ -1,21 +1,21 @@
 import { 
     JsonController, Get, Param, Put, Body, NotFoundError, 
-    Post, HttpCode, Delete
+    Post, HttpCode, Delete, Authorized
   } from 'routing-controllers'
 import Batch from './entity'
 
 @JsonController()
 export default class BatchController {
 
-    // @Authorized()
+    @Authorized()
     @Get('/batches')
     @HttpCode(200)
     async allBatches() {
         const batches = await Batch.find()
-        return { batches }
+        return {batches}
     }
     
-    // @Authorized()
+    @Authorized()
     @Get('/batches/:id')
     @HttpCode(200)
     getBatch(
@@ -23,7 +23,7 @@ export default class BatchController {
         return Batch.findOne(id)
     }
 
-    // @Authorized()
+    @Authorized()
     @Put('/batches/:id')
     async updateBatch(
     @Param('id') id: number,
@@ -34,7 +34,7 @@ export default class BatchController {
         return Batch.merge(batch, update).save()
     }
 
-    // @Authorized()
+    @Authorized()
     @Post('/batches')
     @HttpCode(201)
     async createBatch(
@@ -43,7 +43,7 @@ export default class BatchController {
         return batch.save()
     }
 
-    // @Authorized()
+    @Authorized()
     @Delete('/batches/:id')
     async deleteBatch(
     @Param('id') id: number) {

@@ -29,9 +29,11 @@ class StudentPage extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.getStudents(this.props.match.params.id)
-    this.props.fetchBatch(this.props.match.params.id)
-    this.props.getBatchEvaluations(this.props.match.params.id)
+    if (this.props.authenticated) {
+      this.props.getStudents(this.props.match.params.id)
+      this.props.fetchBatch(this.props.match.params.id)
+      this.props.getBatchEvaluations(this.props.match.params.id)
+      }
     }
 
   addStudent = (student) => {
@@ -53,7 +55,7 @@ class StudentPage extends PureComponent {
     const {students, authenticated, classes, batch, evaluations} = this.props
     if (!authenticated) return (
 			<Redirect to="/login" />
-    )
+		)
 
     if (!batch) return null
 

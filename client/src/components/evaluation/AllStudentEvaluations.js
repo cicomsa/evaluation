@@ -11,9 +11,11 @@ import DeleteIcon from '@material-ui/icons/Delete'
 class EvaluationOverview extends PureComponent {
 
   componentWillMount() {
-     this.props.getStudentEvaluations(this.props.match.params.id)
-    if (this.props.student === null) 
-      this.props.fetchStudent(this.props.match.params.id)
+    if (this.props.authenticated) {
+      this.props.getStudentEvaluations(this.props.match.params.id)
+      if (this.props.student === null) 
+        this.props.fetchStudent(this.props.match.params.id)
+      }
     }
 
   deleteEvaluation = (evaluationId) => {
@@ -43,31 +45,36 @@ class EvaluationOverview extends PureComponent {
           All evaluations 
         </h1> 
         
-        <div>
-          {evaluations
-            .filter(evaluation => evaluation.studentNo === this.props.student.id)
-            .map(evaluation =>  (
-              <div key={evaluation.id}>               
-                <p style={{textDecoration:'underline'}}>{evaluation.date}</p>                
-                <img src={require(`../images/colors/${evaluation.color+'.png'}`)} 
-                  alt="student" width="25"/>
-                <li className="remark">{evaluation.remark}</li>               
-                <DeleteIcon 
-                  style={{marginBottom: "12px"}}
-                  onClick={()=> this.deleteEvaluation(evaluation.id)}/>
-                <br/> 
-                <Button 
-                  type="submit"   
-                  variant="raised"
-                  style={{marginBottom: "-3px"}}
-                  onClick={() => window.location=`/evaluations/${evaluation.id}`}>
-                  Edit details
-                </Button>                
-                <p>-------------------</p>                              
-              </div>
-            ) 
-          )}
-         </div>
+        {evaluations.length > 0? 
+          (<div>
+            {evaluations
+              .filter(evaluation => evaluation.studentNo === this.props.student.id)
+              .map(evaluation =>  (
+                <div key={evaluation.id}>               
+                  <p style={{textDecoration:'underline'}}>{evaluation.date}</p>                
+                  <img src={require(`../images/colors/${evaluation.color+'.png'}`)} 
+                    alt="student" width="25"/>
+                  <li className="remark">{evaluation.remark}</li>               
+                  <DeleteIcon 
+                    style={{marginBottom: "12px"}}
+                    onClick={()=> this.deleteEvaluation(evaluation.id)}/>
+                  <br/> 
+                  <Button 
+                    type="submit"   
+                    variant="raised"
+                    style={{marginBottom: "-3px"}}
+                    onClick={() => window.location=`/evaluations/${evaluation.id}`}>
+                    Edit details
+                  </Button>                
+                  <p>-------------------</p>                          
+                </div>
+              ) 
+            )}
+          </div>
+          ):(
+          <p style={{color:"red"}}>pending evaluations...</p>
+          )
+        }
 
       </div>
     )

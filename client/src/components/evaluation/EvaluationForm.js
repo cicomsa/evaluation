@@ -48,39 +48,43 @@ class EvaluationForm extends PureComponent {
                         value={this.state.color}
                         onChange={this.handleChange}
                         inputProps={{name: 'color'}}
-                        required
-                    >
-                        <option value="" />
-                        <option value={'red'}>red</option>
-                        <option value={'yellow'}>yellow</option>
-                        <option value={'green'}>green</option>
+                        required >
+                            <option value="" />
+                            <option value={'red'}>red</option>
+                            <option value={'yellow'}>yellow</option>
+                            <option value={'green'}>green</option>
                     </Select>
-                    </FormControl>
+                </FormControl>
  
-                    <TextField
-                        id="remark"
-                        label="Remark"
-                        type="text"
-                        name="remark"
-                        margin="normal"
-                        className={classes.container}
-                        value={this.state.remark || ''}
-                        onChange={this.handleChange}                   
-                    />
+                <TextField
+                    id="remark"
+                    label="Remark"
+                    type="text"
+                    name="remark"
+                    margin="normal"
+                    className={classes.container}
+                    value={this.state.remark || ''}
+                    onChange={this.handleChange}
+                />
 
-                    <TextField
-                        id="date"
-                        name="date"
-                        label="Date"
-                        type="date"
-                        margin="normal"
-                        className={classes.container}
-                        value={this.state.date || new Date().toJSON().slice(0,10)}
-                        onChange={ this.handleChange }
-                        InputLabelProps={{shrink: true}}                    
-                    />
-                
-                    <Button className={classes.button} variant="raised" type="submit">Save</Button>
+                <TextField
+                    id="date"
+                    name="date"
+                    label="Date"
+                    type="date"
+                    margin="normal"
+                    className={classes.container}
+                    value={this.state.date || new Date().toJSON().slice(0,10)}
+                    onChange={ this.handleChange }
+                    InputLabelProps={{shrink: true}}                    
+                />
+            
+                <Button     
+                    className={classes.button} 
+                    variant="raised" 
+                    type="submit">
+                    Save
+                </Button>
 
 			</form>           
 		)

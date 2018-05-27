@@ -31,9 +31,13 @@ export const addBatch = (batch) => (dispatch, getState) => {
     }))
 }
 
-export const fetchBatch = (batchId) => (dispatch) => {
+export const fetchBatch = (batchId) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
   request
     .get(`${baseUrl}/batches/${batchId}`)
+    .set('Authorization', `Bearer ${jwt}`)
     .then(response => dispatch({
       type: GET_BATCH,
       payload: response.body

@@ -3,9 +3,13 @@ import {GET_STUDENT, REMOVE_STUDENT, UPDATE_STUDENT,
   ADD_STUDENT, GET_STUDENTS } from './index'
 import {baseUrl} from '../constants'
 
-export const fetchStudent = (studentId,) => (dispatch) => {
+export const fetchStudent = (studentId) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
   request
     .get(`${baseUrl}/students/${studentId}`)
+    .set('Authorization', `Bearer ${jwt}`)
     .then(response => dispatch({
       type: GET_STUDENT,
       payload: response.body

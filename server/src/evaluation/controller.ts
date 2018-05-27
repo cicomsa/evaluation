@@ -1,12 +1,12 @@
 import {
     JsonController,  Post, Param,  HttpCode, NotFoundError, Get,
-    Body, Put, Delete, 
+    Body, Put, Delete, Authorized
   } from 'routing-controllers'
 import  Evaluation  from './entity';
   
 @JsonController() export default class EvaluationController {
 
-   // @Authorized()
+   @Authorized()
    @Get('/evaluations/:id')
    @HttpCode(200)
    getEvaluation(
@@ -16,7 +16,7 @@ import  Evaluation  from './entity';
    }
     
   
-    //@Authorized()
+    @Authorized()
     @Get('/batchevaluations/:id([0-9]+)')
     @HttpCode(200)
     getBatchEvaluations(
@@ -26,7 +26,7 @@ import  Evaluation  from './entity';
         return batchEvaluations 
     }
 
-    //@Authorized()
+    @Authorized()
     @Get('/studentevaluations/:id([0-9]+)')
     @HttpCode(200)
     getStudentEvaluations(
@@ -37,7 +37,7 @@ import  Evaluation  from './entity';
         return studentEvaluations 
     }
 
-    //@Authorized()
+    @Authorized()
     @Post('/evaluations')
     @HttpCode(201)
     async createEvaluation(
@@ -47,7 +47,7 @@ import  Evaluation  from './entity';
         return await evaluation.save()
     }
 
-    //@Authorized()
+    @Authorized()
     @Put('/evaluations/:id')
     async updateEvaluation(
     @Param('id') id: number,
@@ -58,7 +58,7 @@ import  Evaluation  from './entity';
         return Evaluation.merge(evaluation, update).save()
     }
 
-    //@Authorized()
+    @Authorized()
     @Delete('/evaluations/:id')
     async deleteEvaluation(
     @Param('id') id: number) {

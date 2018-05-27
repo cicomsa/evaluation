@@ -31,7 +31,7 @@ class BatchPage extends PureComponent {
 
 const mapStateToProps = (state) => {
   return {
-    authenticated: state.currentUser !== null,  
+    authenticated: state.currentUser !== null 
   }
 }
      

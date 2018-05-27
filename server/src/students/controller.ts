@@ -1,13 +1,13 @@
 import { 
     JsonController, Get, Param, Put, Body, NotFoundError, 
-    Post, HttpCode, Delete 
+    Post, HttpCode, Delete, Authorized
   } from 'routing-controllers'
 import Student from './entity'
 
 @JsonController()
 export default class StudentController {
 
-    // @Authorized()
+    @Authorized()
     @Get('/batchstudents/:id')
     @HttpCode(201)
     getBatchStudents(
@@ -17,14 +17,14 @@ export default class StudentController {
         return BatchStudents 
     }
 
-    // @Authorized()
+    @Authorized()
     @Get('/students/:id')
     getStudent(
     @Param('id') id: number) {
         return Student.findOne(id)
     }
 
-    // @Authorized()
+    @Authorized()
     @Put('/students/:id')
     @HttpCode(200)
     async updateStudent(
@@ -36,7 +36,7 @@ export default class StudentController {
         return Student.merge(student, update).save()
     }
 
-    // @Authorized()
+    @Authorized()
     @Post('/students')
     @HttpCode(201)
     async createStudent(
@@ -46,7 +46,7 @@ export default class StudentController {
         return await student.save()
     }
 
-    // @Authorized()
+    @Authorized()
     @Delete('/students/:id')
     async deleteStudent(
     @Param('id') id: number) {

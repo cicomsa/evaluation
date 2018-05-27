@@ -47,9 +47,13 @@ export const addEvaluation = (evaluation) => (dispatch, getState) => {
     }))
 }
 
-export const fetchEvaluation = (evaluationId) => (dispatch) => {
+export const fetchEvaluation = (evaluationId) => (dispatch, getState) => {
+  const state = getState()
+  const jwt = state.currentUser.jwt
+
   request
     .get(`${baseUrl}/evaluations/${evaluationId}`)
+    .set('Authorization', `Bearer ${jwt}`)
     .then(response => dispatch({
       type: GET_EVALUATION,
       payload: response.body

@@ -40,9 +40,11 @@ class EditEvaluation extends PureComponent {
   }
 
   componentWillMount() {
-    this.props.fetchEvaluation(this.props.match.params.id)
+    if (this.props.authenticated) {
+      this.props.fetchEvaluation(this.props.match.params.id)
+      }
     }
-
+    
   updateEvaluation = (evaluation) => {
     this.toggleEdit()
     this.props.updateEvaluation(this.props.match.params.id, evaluation)   
