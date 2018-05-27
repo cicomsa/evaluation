@@ -11,7 +11,7 @@ export const studentQuestion = (classes, evaluations, students) => {
     <Paper className={classes.rootBar} elevation={4}>
     
       <Typography variant="headline" component="h3" className={classes.typo}>
-          Hello  {askQuestion(evaluations, students)} 
+          Hello  {askQuestion(evaluations, students)}! 
       </Typography>  
       
         <TextField
@@ -23,12 +23,12 @@ export const studentQuestion = (classes, evaluations, students) => {
           className={classes.textFieldQ}
           onChange={this.handleChange}                   
         />
-
         <br/>
         <Button 
           type="submit" 
           className={classes.button} 
-          variant="raised">
+          variant="raised"
+          onClick={() => window.location.reload()}>
           Send
         </Button>
     

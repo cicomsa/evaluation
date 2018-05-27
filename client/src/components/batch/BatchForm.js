@@ -10,8 +10,7 @@ class BatchForm extends PureComponent {
 
 	handleSubmit = (e) => {
     e.preventDefault()
-		this.props.onSubmit(this.state)
-
+        this.props.onSubmit(this.state)
 	}
 
 	handleChange = (event) => {
@@ -19,7 +18,6 @@ class BatchForm extends PureComponent {
 
     this.setState({
       [name]: value
-
     })
   }
 

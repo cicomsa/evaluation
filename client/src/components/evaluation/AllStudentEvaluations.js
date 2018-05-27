@@ -1,7 +1,6 @@
 import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-import {Link} from 'react-router-dom'
 import {login} from '../../actions/users'
 import {fetchStudent} from '../../actions/students'
 import {deleteEvaluation,updateEvaluation, 
@@ -27,7 +26,6 @@ class EvaluationOverview extends PureComponent {
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
-
     if (!student) return null
        
     return (
@@ -49,27 +47,23 @@ class EvaluationOverview extends PureComponent {
           {evaluations
             .filter(evaluation => evaluation.studentNo === this.props.student.id)
             .map(evaluation =>  (
-              <div key={evaluation.id}>
-                <p style={{textDecoration:'underline'}}>{evaluation.date}</p> 
+              <div key={evaluation.id}>               
+                <p style={{textDecoration:'underline'}}>{evaluation.date}</p>                
                 <img src={require(`../images/colors/${evaluation.color+'.png'}`)} 
                   alt="student" width="25"/>
-                <li className="remark">{evaluation.remark}</li>
-
+                <li className="remark">{evaluation.remark}</li>               
                 <DeleteIcon 
                   style={{marginBottom: "12px"}}
-                  onClick={()=> this.deleteEvaluation(evaluation.id)}/> 
-                
-                <div>
-                  <Link to={`/evaluations/${evaluation.id}`}>
-                    <Button 
-                      type="submit"   
-                      variant="raised"
-                      style={{marginBottom: "-3px"}}>
-                      Edit details
-                    </Button>
-                  </Link> 
-                  <p>-------------------</p>  
-                </div>                   
+                  onClick={()=> this.deleteEvaluation(evaluation.id)}/>
+                <br/> 
+                <Button 
+                  type="submit"   
+                  variant="raised"
+                  style={{marginBottom: "-3px"}}
+                  onClick={() => window.location=`/evaluations/${evaluation.id}`}>
+                  Edit details
+                </Button>                
+                <p>-------------------</p>                              
               </div>
             ) 
           )}
