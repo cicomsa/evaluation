@@ -2,7 +2,7 @@
 
 ## Project description
 
-This project was made as a final individual assignment, where I could showcase my knowledge and understanding in React and Redux.
+This project was made as a final individual assignment, where I could showcase my knowledge and understanding in React and Redux, and in the front-end connection to the back-end.
 
 **The goal of the app is**
 
