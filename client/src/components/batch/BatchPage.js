@@ -12,7 +12,6 @@ import {fetchBatch,updateBatch} from '../../actions/batches'
 import {getStudents, addStudent, deleteStudent} from '../../actions/students'
 import {getBatchEvaluations} from '../../actions/evaluations'
 import {percentageAndAkQuestionStyles} from '../styles'
-import '../cssFile.css'
 import {withStyles} from 'material-ui/styles';
 import Button from 'material-ui/Button'
 
