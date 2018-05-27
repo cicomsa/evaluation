@@ -30,7 +30,7 @@ The database containes four tables: user, batch, student, evaluation.
 User is a table of the registred users which holds the users' e-mail and hashed password.
 The batch table contains details of the batch: number, start date and end date.
 The student table holds the students' details: full name, image and batch id.
-The evaluation table presents the evaluations' details: color, date, remark, student-id and batch-id.
+The evaluation table presents the evaluations' details: color, date, remark, student id and batch id.
 
 ## User routes
 
