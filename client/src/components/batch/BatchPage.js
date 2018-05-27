@@ -1,94 +1,105 @@
 import React, {PureComponent} from 'react';
-import {withStyles} from 'material-ui/styles';
-import Table, {TableBody, TableCell, TableHead, TableRow} from 'material-ui/Table';
-import Paper from 'material-ui/Paper';
 import {connect} from 'react-redux'
-import {getBatches, addBatch} from '../../actions/batches'
-import {deleteBatch} from '../../actions/batch'
-import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-import BatchForm from './BatchForm';
-import {Link} from 'react-router-dom'
-import DeleteIcon from '@material-ui/icons/Delete'
+import BatchForm from '../batch/BatchForm'
+import StudentForm from '../student/StudentForm'
+import {batchInfo} from './BatchInfo'
+import {studentsGrid} from '../student/StudentsGrid'
+import {percentageBar} from '../logic/PercentageBar'
+import {studentQuestion} from '../logic/AskQuestion'
+import {login} from '../../actions/users'
+import {fetchBatch,updateBatch} from '../../actions/batches'
+import {getStudents, addStudent, deleteStudent} from '../../actions/students'
+import {getBatchEvaluations} from '../../actions/evaluations'
+import {percentageAndAkQuestionStyles} from '../styles'
+import '../cssFile.css'
+import {withStyles} from 'material-ui/styles';
+import Button from 'material-ui/Button'
 
+class StudentPage extends PureComponent {
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-    display: 'flex'
-  },
-  table: {
-    minWidth: 700
+  state = {
+    edit: false
   }
-})
 
-class BatchPage extends PureComponent {
+  toggleEdit = () => {
+    this.setState({
+      edit: !this.state.edit
+    })
+  }
 
   componentWillMount() {
-	  this.props.getBatches()
+    this.props.getStudents(this.props.match.params.id)
+    this.props.fetchBatch(this.props.match.params.id)
+    this.props.getBatchEvaluations(this.props.match.params.id)
     }
 
-  addBatch = (batch) => {
-    this.props.addBatch(batch)
+  addStudent = (student) => {
+    student.batchId = this.props.batch.id
+    this.props.addStudent(student)
   }
 
-  deleteBatch = (batchId) => {
-    this.props.deleteBatch(batchId)
+  deleteStudent = (studentId) => {
+    this.props.deleteStudent(studentId)
+  }
+
+  updateBatch = (batch) => {
+    this.toggleEdit()
+    this.props.updateBatch(this.props.match.params.id, batch)
   }
 
   render() {
 
-    const { batches, classes, authenticated } = this.props;
+    const {students, authenticated, classes, batch, evaluations} = this.props
     if (!authenticated) return (
 			<Redirect to="/login" />
-		)
+    )
+
+    if (!batch) return null
 
     return (
       <div>
-       
-        <BatchForm onSubmit={this.addBatch}/>
-        <hr></hr>
-        <h1>Current classes</h1>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow >
-                <TableCell>Batch number</TableCell>
-                <TableCell>Start Date</TableCell>
-                <TableCell>End Date</TableCell>
-                <TableCell>Delete</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {batches.sort((a,b) => b.batchNumber-a.batchNumber).map(batch => {
-                return (
-                  <TableRow key={batch.id} hover align='left'>
-                    <TableCell><Link to={ `/batches/${batch.id}` }>
-                      {batch.batchNumber}</Link></TableCell>
-                    <TableCell>{batch.startDate}</TableCell>
-                    <TableCell>{batch.endDate}</TableCell>
-                    <TableCell>
-                      <DeleteIcon onClick={()=> this.deleteBatch(batch.id)}/>
-                    </TableCell>
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
+
+        <Button 
+          type="submit" 
+          variant="raised" 
+          className={classes.button}
+          onClick={()=>window.history.back()}
+          >Back
+        </Button>
+
+        { this.state.edit &&
+          <BatchForm initialValues={batch} onSubmit={this.updateBatch.bind(this)}/>         
+        }
+
+        { !this.state.edit &&
+          <div>
+            {batchInfo(batch) }
+            <Button type="submit" variant="raised" className="backButton" onClick={()=>this.toggleEdit()}>Edit</Button>
+         </div>
+        }
+        <hr/>
+        <StudentForm onSubmit={this.addStudent}/>
+        <hr/>
+        {percentageBar(classes, students, evaluations)} 
+        {studentQuestion(classes, evaluations, students)}       
+        <br/>
+        {studentsGrid(students, evaluations, classes, this.deleteStudent)}
+
       </div>
-      )
+    )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    batches: state.batches,
-    authenticated: state.currentUser !== null,  
+    students: state.students,
+    batch: state.batch,
+    authenticated: state.currentUser !== null,
+    evaluations: state.evaluations
   }
 }
-     
-export default withStyles(styles)(connect(mapStateToProps, 
-  {getBatches, login, addBatch, deleteBatch})(BatchPage))
+
+export default withStyles(percentageAndAkQuestionStyles)(connect(mapStateToProps,
+  {getStudents, login, addStudent, deleteStudent, fetchBatch, updateBatch, 
+  getBatchEvaluations})(StudentPage))

@@ -1,12 +1,12 @@
 import {GET_EVALUATION, UPDATE_EVALUATION} from '../actions/index'
 
-export default function (state = null, action) {
-  switch (action.type) {
+export default function (state = null, {type, payload}) {
+  switch (type) {
     case GET_EVALUATION:
-      return action.payload
+      return payload
     case UPDATE_EVALUATION:
       return {...state,
-        ...action.payload}
+        ...payload}
 
     default:
       return state

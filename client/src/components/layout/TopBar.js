@@ -9,7 +9,7 @@ const TopBar = (props) => {
   const { location, history} = props
 
   return (
-    <AppBar position="absolute" style={{zIndex:10}}>
+    <AppBar position="absolute" style={{zIndex:10, backgroundColor:"green"}}>
       <Toolbar>
         <Typography variant="title" color="inherit" style={{flex: 1}}>
            Class Evaluations

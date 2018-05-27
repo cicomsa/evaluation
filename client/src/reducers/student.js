@@ -1,12 +1,12 @@
 import {GET_STUDENT, UPDATE_STUDENT} from '../actions/index'
 
-export default function (state = null, action) {
-  switch (action.type) {
+export default function (state = null, {type, payload}) {
+  switch (type) {
     case GET_STUDENT:
-      return action.payload
+      return payload
     case UPDATE_STUDENT:
       return {...state,
-        ...action.payload}
+        ...payload}
 
     default:
       return state

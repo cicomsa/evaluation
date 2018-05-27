@@ -1,24 +1,32 @@
 import { 
-    JsonController, Get, Param, Put, Body, NotFoundError, Post, HttpCode, Delete 
+    JsonController, Get, Param, Put, Body, NotFoundError, 
+    Post, HttpCode, Delete 
   } from 'routing-controllers'
 import Student from './entity'
 
 @JsonController()
 export default class StudentController {
 
-    @Get('/students')
-    async allStudents() {
-        const students = await Student.find()
-        return { students }
-    } 
+    // @Authorized()
+    @Get('/batchstudents/:id')
+    @HttpCode(201)
+    getBatchStudents(
+        @Param('id') batchId: number
+    ) {
+        let BatchStudents = Student.find( {batchId} ) 
+        return BatchStudents 
+    }
 
+    // @Authorized()
     @Get('/students/:id')
     getStudent(
     @Param('id') id: number) {
         return Student.findOne(id)
     }
 
+    // @Authorized()
     @Put('/students/:id')
+    @HttpCode(200)
     async updateStudent(
     @Param('id') id: number,
     @Body() update: Partial<Student>) {
@@ -28,18 +36,17 @@ export default class StudentController {
         return Student.merge(student, update).save()
     }
 
-    //@Authorized()
+    // @Authorized()
     @Post('/students')
     @HttpCode(201)
     async createStudent(
     
-    @Body() student: Student) {   
-        const entity = await student.save()
-               
-        return entity
+    @Body() student: Student) { 
+
+        return await student.save()
     }
 
-    
+    // @Authorized()
     @Delete('/students/:id')
     async deleteStudent(
     @Param('id') id: number) {

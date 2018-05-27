@@ -1,14 +1,13 @@
 import React, {PureComponent} from 'react';
-import {withStyles} from 'material-ui/styles';
 import {connect} from 'react-redux'
-import {getStudents} from '../../actions/students'
-import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-import Button from 'material-ui/Button'
-import {fetchEvaluation,updateEvaluation} from '../../actions/evaluation'
-import ClearIcon from '@material-ui/icons/Clear'
 import EvaluationForm from './EvaluationForm'
-import {fetchStudent} from '../../actions/student'
+import {login} from '../../actions/users'
+import {getStudents, fetchStudent} from '../../actions/students'
+import {fetchEvaluation,updateEvaluation} from '../../actions/evaluations'
+import {withStyles} from 'material-ui/styles';
+import Button from 'material-ui/Button'
+import ClearIcon from '@material-ui/icons/Clear'
 
 const styles = theme => ({
   root: {
@@ -51,7 +50,7 @@ class EditEvaluation extends PureComponent {
 
   render() {
 
-    const { authenticated, evaluation } = this.props;
+    const {authenticated, evaluation} = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
@@ -61,12 +60,19 @@ class EditEvaluation extends PureComponent {
     return (
       <div>
  
-        <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
+        <Button 
+          type="submit" 
+          variant="raised" 
+          style={{marginTop:'7px'}} 
+          onClick={()=>window.history.back()}>
+          Back
+        </Button> 
 
         {
         this.state.edit &&
         <div>
-          <EvaluationForm initialValues={evaluation} onSubmit={this.updateEvaluation} />
+          <EvaluationForm initialValues={evaluation} 
+            onSubmit={this.updateEvaluation} />
           <ClearIcon onClick = {() => this.toggleEdit()}/>
         </div>
         }
@@ -74,16 +80,21 @@ class EditEvaluation extends PureComponent {
         { !this.state.edit &&
         <div>
           <div>
-            <h2>Evaluation</h2>
-            <p style={{textDecoration:"underline"}}>{evaluation.date}</p> 
+            <h1 style={{marginBottom: "15px"}}>Evaluation</h1>
+            <p>- {evaluation.date} -</p> 
             <p style={{textDecoration:"underline"}}>Color: </p>      
-            <img src={require(`../evaluation/colors/${evaluation.color+'.png'}`)} 
+            <img src={require(`../images/colors/${evaluation.color+'.png'}`)} 
               alt="student" width="25"/>
             <p style={{textDecoration:"underline"}}>Remark: </p>  
             <li className='overviewRemark'>{evaluation.remark}</li>
           </div>
           
-          <Button type="submit" variant="raised" className="backButton" onClick={()=>this.toggleEdit()}>Edit evaluation</Button> 
+          <Button 
+            type="submit" 
+            variant="raised" 
+            onClick={()=>this.toggleEdit()}>
+            Edit evaluation
+          </Button> 
         
         </div>
         }

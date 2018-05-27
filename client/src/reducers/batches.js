@@ -1,13 +1,13 @@
 import {GET_BATCHES, ADD_BATCH, REMOVE_BATCH} from '../actions/index'
 
-export default function (state = [], action) {
-  switch (action.type) {
+export default function (state = [], {type, payload}) {
+  switch (type) {
     case GET_BATCHES:
-      return action.payload
+      return payload
     case ADD_BATCH:
-      return state.concat(action.payload)
+      return state.concat(payload)
     case REMOVE_BATCH:
-      return state.filter(batch => batch.id !== action.payload) 
+      return state.filter(batch => batch.id !== payload) 
     default:
       return state
   }

@@ -1,5 +1,4 @@
-import {BaseEntity, PrimaryGeneratedColumn, Column, Entity, ManyToOne} from 'typeorm'
-import Student from '../students/entity';
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity} from 'typeorm'
 
 export type Color = 'red' | 'yellow' | 'green' | null
 

@@ -1,153 +1,102 @@
-import React, {PureComponent} from 'react';
-import {withStyles} from 'material-ui/styles';
-import IconButton from 'material-ui/IconButton'
+import React, {PureComponent} from 'react'
 import {connect} from 'react-redux'
-import {getStudents, addStudent} from '../../actions/students'
-import {deleteStudent} from '../../actions/student'
-import {login} from '../../actions/users'
 import {Redirect} from 'react-router-dom'
-// import BatchForm from '../batch/BatchForm';
-import StudentForm from './StudentForm'
-import {Link} from 'react-router-dom'
-import DeleteIcon from '@material-ui/icons/Delete'
-// import StudentsGrid from './StudentsGrid'
+import StudentForm from '../student/StudentForm'
+import {lastEval} from '../evaluation/DisplayEvaluation'
+import {displayLastEvaluation} from '../evaluation/LastEvaluation'
+import {addTodaysEvaluation} from '../evaluation/AddEvaluation'
+import {login} from '../../actions/users'
+import {fetchStudent, updateStudent} from '../../actions/students'
+import {addEvaluation, getStudentEvaluations} from '../../actions/evaluations'
+import ClearIcon from '@material-ui/icons/Clear'
 import Button from 'material-ui/Button'
-import {fetchBatch,updateBatch} from '../../actions/batch'
-//import ClearIcon from '@material-ui/icons/Clear'
-import PercentageBar from './PercentageBar';
-import GridList, { GridListTile, GridListTileBar } from 'material-ui/GridList'
-import BatchForm from '../batch/BatchForm'
-import {getEvaluations} from '../../actions/evaluations'
 
-const styles = theme => ({
-  root: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    overflow: 'hidden',
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: 830,
-    height: 570
-  },
-  icon: {
-    marginRight:30,
-    size: 30
-  }
-})
-
-class StudentPage extends PureComponent {
+class EvaluationPage extends PureComponent {
 
   state = {
-    edit: false
+    editStudent: false,
   }
 
-  toggleEdit = () => {
+  toggleEditStudent = () => {
     this.setState({
-      edit: !this.state.edit
+      editStudent: !this.state.editStudent 
     })
   }
 
   componentWillMount() {
-    this.props.getStudents()
-    this.props.fetchBatch(this.props.match.params.id)
-    this.props.getEvaluations()
-    }
-
-  addStudent = (student) => {
-    student.batchNo = this.props.batch.id
-    this.props.addStudent(student)
+    this.props.getStudentEvaluations(this.props.match.params.id)
+    this.props.fetchStudent(this.props.match.params.id)
+ 
   }
 
-  deleteStudent = (studentId) => {
-    this.props.deleteStudent(studentId)
+  updateStudent = (student) => {
+    this.props.updateStudent(this.props.match.params.id, student)
+    this.toggleEditStudent()
   }
-
-  updateBatch = (batch) => {
-    this.toggleEdit()
-    this.props.updateBatch(this.props.match.params.id, batch)   
+  
+  addEvaluation = (evaluation) => {
+    evaluation.studentNo = this.props.student.id
+    evaluation.batchNo = this.props.student.batchId
+    this.props.addEvaluation(evaluation)    
   }
 
   render() {
 
-    const { students, authenticated, classes, batch, evaluations } = this.props;
+    const {evaluations, authenticated, student} = this.props;
     if (!authenticated) return (
 			<Redirect to="/login" />
     )
-    
-    if (!batch) return null
-  
-    return (
+    if (!student) return null
+    const displayEvaluation = lastEval(evaluations, student)
+
+    return ( 
+          
       <div>
 
-
-        <Button type="submit" variant="raised" className="backButton" onClick={()=>window.history.back()}>Back</Button> 
-        { this.state.edit &&
-          <BatchForm initialValues={batch} onSubmit={this.updateBatch.bind(this)}/>
-        }
-        { !this.state.edit &&
-        <div>
-          <p> Number: {batch.batchNumber}</p>
-          <p> Start Date: {batch.startDate}</p>
-          <p> End Date: {batch.endDate}</p>
-          <br/>
-          
-          <Button type="submit" variant="raised" className="backButton" onClick={()=>this.toggleEdit()}>Edit</Button> 
-        
-        </div>
+        <Button type="submit" 
+          variant="raised" 
+          style={{marginTop:'7px'}} 
+          onClick={()=>window.history.back()}>
+          Back
+        </Button>
+  
+        {
+         this.state.editStudent &&
+         <div>
+           <StudentForm initialValues={student} onSubmit={this.updateStudent} />
+           <ClearIcon onClick = {() => this.toggleEditStudent()}/>
+         </div>
         }
 
-          <StudentForm onSubmit={this.addStudent}/>
-          <hr></hr>
-          <PercentageBar/>
-        {console.log(evaluations
-            .filter(evaluation => evaluation.batchNo === batch.id)
-            .map(evaluation => evaluation.color))}
-          <br></br> 
-          <div className={classes.root}> 
-      
-            <GridList cellHeight={280} className={classes.gridList}>
-              
-            )}
+        {
+         !this.state.editStudent &&
+         <div>
+            <h1 className="studentProfile">Student profile</h1>
+            <img src={require(`../images/images-landscape/${student.photo}`)} 
+              alt="student" width='200'/>
+            <p style={{textDecoration:"underline"}}>{student.fullName}</p>     
+             
+            <Button variant="raised" type="submit" 
+              onClick = {() => this.toggleEditStudent()}>Edit</Button>     
+         </div>
+        }    
+        <hr/>
+        {addTodaysEvaluation(displayEvaluation, this.addEvaluation)}
+        {displayLastEvaluation(evaluations, student)}  
 
-              { students
-              .filter(student =>student.batchNo === batch.id)
-              .map(student => (
-              <GridListTile key={student.id}>
-                  <Link to={`/students/${student.id}`}><img src={require(`./images-landscape/${student.photo}`)} alt="student" width='500'/></Link>
-                  <GridListTileBar
-                  title={student.fullName}
-                  subtitle= {this.props.evaluations? 
-                      this.props.evaluations
-                      .filter(evaluation => evaluation.studentNo === student.id)
-                      .map(evaluation => 
-                        <img key={evaluation.id} src={require(`../evaluation/colors/${(evaluation.color)? evaluation.color+'.png': "blue.png"}`)} 
-                        alt="student" width="25"/>):''}
-
-                  actionIcon={
-                    <IconButton className={classes.button}  aria-label="Delete">
-                      <DeleteIcon style={{color: 'white'}} onClick={()=> this.deleteStudent(student.id)}/>
-                    </IconButton>                 
-                  }
-                  />
-                </GridListTile>
-                ))}
-            </GridList>   
-        </div>
-      </div>
+      </div>     
     )
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    students: state.students,
-    batch: state.batch,
+    student: state.student,
     authenticated: state.currentUser !== null, 
-    evaluations: state.evaluations 
+    evaluations: state.evaluations,
   }
 }
      
-export default withStyles(styles)(connect(mapStateToProps, 
-  {getStudents, login, addStudent, deleteStudent, fetchBatch,updateBatch, getEvaluations})(StudentPage))
+export default connect(mapStateToProps, 
+  {login, addEvaluation, fetchStudent, getStudentEvaluations, 
+    updateStudent})(EvaluationPage)

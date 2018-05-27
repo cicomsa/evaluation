@@ -2,15 +2,7 @@ import React, {PureComponent} from 'react'
 import TextField from 'material-ui/TextField'
 import Button from 'material-ui/Button'
 import {withStyles} from 'material-ui/styles'
-
-const styles = theme => ({
-
-    textField: {
-      marginLeft: theme.spacing.unit,
-      marginRight: theme.spacing.unit,
-      width: 250,
-    }
-})
+import {studentFormStyles} from '../styles'
 
 class StudentForm extends PureComponent {
 
@@ -44,43 +36,42 @@ class StudentForm extends PureComponent {
 			<form onSubmit={this.handleSubmit}>
             
                 <h1>Student</h1>
-                <div>
                     
-                    <TextField
-                        id="fullName"
-                        name="fullName"
-                        label="Full Name"
-                        type="text"
-                        margin="normal"
-                        className={classes.textField}
-                        value={this.state.fullName || ''}
-                        onChange={ this.handleChange }                       
-                        required
-                    />
-                </div>
-
-                <div className="upload">
-                   
-                    <TextField
+                <TextField
+                    id="fullName"
+                    name="fullName"
+                    label="Full Name"
+                    type="text"
+                    margin="normal"
+                    className={classes.container}
+                    value={this.state.fullName || ''}
+                    onChange={ this.handleChange }                       
+                    required
+                />
+                
+                <TextField
                     accept="image/*"
                     id="photo"
                     label="Photo"
                     type="file"
                     name="photo"
                     margin="normal"
-                    className={classes.textField}
+                    className={classes.container}
                     onChange={this.handleFileChange}                   
                     InputLabelProps={{shrink: true}}
-                    />
-                </div>
-                
-                <div>
-                    <Button variant="raised" type="submit"> Submit </Button>
-                </div>
+                />
+
+                <Button 
+                    variant="raised" 
+                    type="submit"
+                    className={classes.button}> 
+                    Submit 
+                </Button>
+            
 			</form>
             
 		)
 	}
 }
 
-export default withStyles(styles)(StudentForm);
+export default withStyles(studentFormStyles)(StudentForm);

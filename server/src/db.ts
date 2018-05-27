@@ -29,7 +29,7 @@ class CustomNamingStrategy extends DefaultNamingStrategy implements NamingStrate
 export default () =>
   createConnection({
       type: "postgres",
-      url: process.env.DATABASE_URL || 'postgres://postgres:secret@localhost:5432/postgres',
+      url: process.env.DATABASE_URL || 'postgres://postgres:anotherSecret@localhost:5432/postgres',
       entities: [
           User, 
           Batch,

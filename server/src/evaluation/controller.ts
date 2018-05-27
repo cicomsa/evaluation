@@ -8,27 +8,43 @@ import  Evaluation  from './entity';
 
    // @Authorized()
    @Get('/evaluations/:id')
+   @HttpCode(200)
    getEvaluation(
    @Param('id') id: number) {
+
        return Evaluation.findOne(id)
    }
     
   
     //@Authorized()
-    @Get('/evaluations')
-    getEvaluations() {
-        
-        return Evaluation.find()
+    @Get('/batchevaluations/:id([0-9]+)')
+    @HttpCode(200)
+    getBatchEvaluations(
+        @Param('id') batchNo: number
+    ) {
+        const batchEvaluations = Evaluation.find( {batchNo} ) 
+        return batchEvaluations 
     }
-  
+
+    //@Authorized()
+    @Get('/studentevaluations/:id([0-9]+)')
+    @HttpCode(200)
+    getStudentEvaluations(
+        @Param('id') studentNo: number
+    ) {
+        
+        const studentEvaluations = Evaluation.find( {studentNo} ) 
+        return studentEvaluations 
+    }
+
     //@Authorized()
     @Post('/evaluations')
     @HttpCode(201)
     async createEvaluation(
-        @Body() evaluation: Evaluation) { 
+    
+    @Body() evaluation: Evaluation) { 
 
-        return evaluation.save()
-        
+        return await evaluation.save()
     }
 
     //@Authorized()

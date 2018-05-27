@@ -1,8 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne} from 'typeorm'
-import {BaseEntity} from 'typeorm/repository/BaseEntity'
-import {IsString} from 'class-validator'
-import Evaluation  from '../evaluation/entity';
-import Batch from '../batch/entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { BaseEntity } from 'typeorm/repository/BaseEntity'
+import { IsString } from 'class-validator'
 
 @Entity()
 export default class Student extends BaseEntity {
@@ -18,9 +16,7 @@ export default class Student extends BaseEntity {
     photo: string
 
     @Column('int', {nullable: true})
-    batchNo: number
-
-
+    batchId: number
 
     // @ManyToOne(_ => Batch, batch => batch.students)
     // batch: Batch;
