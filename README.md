@@ -6,7 +6,7 @@ This project was made as a final individual assignment, where I could showcase m
 
 **The goal of the app is**
 
-* To give teachers a platform where they can add, edit and delete batches, students and/or evaluations.
+* To have built a platform for teachers where they can add, edit and delete batches, students and/or evaluations.
 
 ## How to:
 
@@ -35,12 +35,12 @@ The evaluation table presents the evaluations' details: color, date, remark, stu
 ## User routes
 
 |**URI**|**VERB**|**ACTION**|
-|--------------------------|---------------------|--------------------------------------------------|
-| /batches                 | GET&POST&DELETE     | Display all batches. Add & delete batch          |
-| /batches/:id             | GET&PUT&POST&DELETE | Display & edit batch. Add & delete student       |
-| /students/:id            | GET&PUT&POST&DELETE | Display & edit student. Add & display evaluation |            
-| /evaluations/student/:id | GET&PUT             | Display & delete evaluations                     |
-| /evaluations/:id         |                     | Display & edit evaluation                        |
+|--------------------------|---------------------|---------------------------------------------------|
+| /batches                 | GET&POST&DELETE     | Display all batches. Add & delete batch.          |
+| /batches/:id             | GET&PUT&POST&DELETE | Display & edit batch. Add & delete student.       |
+| /students/:id            | GET&PUT&POST&DELETE | Display & edit student. Add & display evaluation. |            
+| /evaluations/student/:id | GET&PUT             | Display & delete evaluations.                     |
+| /evaluations/:id         |                     | Display & edit evaluation.                        |
 
 
 ## Public routes
@@ -54,7 +54,7 @@ The evaluation table presents the evaluations' details: color, date, remark, stu
 
 ## Front-End Folder Structure
 
-After creation, your 'client' directory should look like this:
+After creation, your 'client' directory should contain the following:
 
 ```
 ClassEvaluation/
@@ -82,14 +82,14 @@ ClassEvaluation/
 
 ## Back-End Folder Structure
 
-After creation, your 'server' directory should look like this:
+After creation, your 'server' directory should contain the following:
 
 ```
   node_modules/
-  target/
   package.json
-  tsconfig.json
   yarn.lock
+  target/
+  tsconfig.json
   
   src/
     batch/
