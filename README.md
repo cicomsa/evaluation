@@ -24,7 +24,7 @@ Run the back-end side of the app:
 * Start the TypeScript compiler: `tsc -w`
 * Connect to Postgres with TypeORM: `yarn start`
 
-**API and Database**
+## API and Database
 
 The database containes four tables: user, batch, student, evaluation. 
 User is a table of the registred users which holds the users' e-mail and hashed password.
@@ -32,7 +32,7 @@ The batch table contains details of the batch: number, start date and end date.
 The student table holds the students' details: full name, image and batch id.
 The evaluation table presents the evaluations' details: color, date, remark, student-id and batch-id.
 
-### User routes
+## User routes
 
 |**URI**|**VERB**|**ACTION**|
 |--------------------------|---------------------|--------------------------------------------------|
@@ -43,7 +43,7 @@ The evaluation table presents the evaluations' details: color, date, remark, stu
 | /evaluations/:id         |                     | Display & edit evaluation                        |
 
 
-### Public routes
+## Public routes
 
 |**URI**|**VERB**|**ACTION**|
 |-------------|---------|-----------------------------------|
@@ -52,24 +52,54 @@ The evaluation table presents the evaluations' details: color, date, remark, stu
 | /signup     | POST    | signupPage                        |
 
 
-## Folder Structure
+## Front-End Folder Structure
 
-After creation, your project should look like this:
+After creation, your 'client' directory should look like this:
 
 ```
-my-app/
+ClassEvaluation/
   node_modules/
   package.json
+  yarn.lock
   public/
     index.html
     
   src/
     actions/
-    reducers/
     components/
+    reducers/
     App.css
     App.js
+    constants.js
     App.test.js
     index.css
     index.js 
+    jwt.js
+    middleware.js
+    registerServiceWorker.js
+    store.js
 ```
+
+## Back-End Folder Structure
+
+After creation, your 'server' directory should look like this:
+
+```
+  node_modules/
+  target/
+  package.json
+  tsconfig.json
+  yarn.lock
+  
+  src/
+    batch/
+    evaluation/
+    logins/
+    students/
+    users/
+    db.ts
+    index.ts
+    jwt.ts
+
+```
+    
