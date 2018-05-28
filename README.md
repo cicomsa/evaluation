@@ -20,7 +20,7 @@ Run the front-end side of the app:
 
 Run the back-end side of the app:
 
-* Have a ‘DATABASE_URL' environment variable set
+* Have set a ‘DATABASE_URL' environment variable
 * Start the TypeScript compiler: `tsc -w`
 * Connect to Postgres with TypeORM: `yarn start`
 
